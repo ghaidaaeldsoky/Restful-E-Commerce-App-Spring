@@ -1,0 +1,6 @@
+# Ignore target directories
+misk/target/
+
+# Ignore idea directories
+.idea/
+misk/.idea/
