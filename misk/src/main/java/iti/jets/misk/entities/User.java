@@ -24,8 +24,6 @@ import java.util.Set;
 @Entity
 @Table(name = "user", catalog = "misk2", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User implements java.io.Serializable {
-
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", unique = true, nullable = false)
