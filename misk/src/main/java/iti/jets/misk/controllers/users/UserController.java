@@ -4,10 +4,7 @@ import iti.jets.misk.dtos.UserDTO;
 import iti.jets.misk.entities.User;
 import iti.jets.misk.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,8 +19,13 @@ public class UserController {
         return userService.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("id/{id}")
     public User getUser(@PathVariable int id) {
         return userService.findById(id);
+    }
+
+    @GetMapping("email/{email}")
+    public User getUserByEmail(@PathVariable String email) {
+        return userService.findByEmail(email);
     }
 }

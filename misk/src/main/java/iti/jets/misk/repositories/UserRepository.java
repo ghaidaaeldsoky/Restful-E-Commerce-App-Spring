@@ -10,4 +10,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     List<User> findAll(); // It should not return DTO
 
     Optional<User> findById(int id);
+
+    Optional<User> findByEmail(String email);
 }
