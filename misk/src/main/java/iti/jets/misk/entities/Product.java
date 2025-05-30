@@ -54,7 +54,7 @@ public class Product implements java.io.Serializable {
     private Set<Orderitems> orderitemses = new HashSet<Orderitems>(0);
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    private Set<Shoppingcart> shoppingcarts = new HashSet<Shoppingcart>(0);
+    private Set<ShoppingcartItem> shoppingcarts = new HashSet<ShoppingcartItem>(0);
 
     public Product() {
     }
@@ -71,7 +71,7 @@ public class Product implements java.io.Serializable {
     }
 
     // public Product(int productId, String name, String description, BigDecimal price, int quantity, String photo,
-    //         String brand, String size, String gender, Set<Orderitems> orderitemses, Set<Shoppingcart> shoppingcarts) {
+    //         String brand, String size, String gender, Set<Orderitems> orderitemses, Set<ShoppingcartItem> shoppingcarts) {
     //     this.productId = productId;
     //     this.name = name;
     //     this.description = description;
@@ -165,11 +165,11 @@ public class Product implements java.io.Serializable {
     //     this.orderitemses = orderitemses;
     // }
 
-    // public Set<Shoppingcart> getShoppingcarts() {
+    // public Set<ShoppingcartItem> getShoppingcarts() {
     //     return this.shoppingcarts;
     // }
 
-    // public void setShoppingcarts(Set<Shoppingcart> shoppingcarts) {
+    // public void setShoppingcarts(Set<ShoppingcartItem> shoppingcarts) {
     //     this.shoppingcarts = shoppingcarts;
     // }
 

@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "shoppingcart", catalog = "misk2")
-public class Shoppingcart implements java.io.Serializable {
+public class ShoppingcartItem implements java.io.Serializable {
     @EmbeddedId
 
     @AttributeOverrides({
@@ -40,17 +40,17 @@ public class Shoppingcart implements java.io.Serializable {
     @Column(name = "added_at", length = 19)
     private Timestamp addedAt;
 
-    public Shoppingcart() {
+    public ShoppingcartItem() {
     }
 
-    public Shoppingcart(ShoppingcartId id, User user, Product product, int quantity) {
+    public ShoppingcartItem(ShoppingcartId id, User user, Product product, int quantity) {
         this.id = id;
         this.user = user;
         this.product = product;
         this.quantity = quantity;
     }
 
-    public Shoppingcart(ShoppingcartId id, User user, Product product, int quantity, Timestamp addedAt) {
+    public ShoppingcartItem(ShoppingcartId id, User user, Product product, int quantity, Timestamp addedAt) {
         this.id = id;
         this.user = user;
         this.product = product;

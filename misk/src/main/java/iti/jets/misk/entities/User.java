@@ -59,7 +59,7 @@ public class User implements java.io.Serializable {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user",cascade = CascadeType.ALL)
     private Set<Useraddress> useraddresses = new HashSet<Useraddress>(0);
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-   private Set<Shoppingcart> shoppingcarts = new HashSet<Shoppingcart>(0);
+   private Set<ShoppingcartItem> shoppingcarts = new HashSet<ShoppingcartItem>(0);
 
     public User() {
     }
@@ -75,7 +75,7 @@ public class User implements java.io.Serializable {
 
     public User(int userId, String name, String phoneNumber, String email, String password, Date birthday, String job,
             BigDecimal creditLimit, String interests, boolean isAdmin, Set<Order> orders,
-            Set<Useraddress> useraddresses, Set<Shoppingcart> shoppingcarts) {
+            Set<Useraddress> useraddresses, Set<ShoppingcartItem> shoppingcarts) {
         this.userId = userId;
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -194,11 +194,11 @@ public class User implements java.io.Serializable {
     }
 
    
-    public Set<Shoppingcart> getShoppingcarts() {
+    public Set<ShoppingcartItem> getShoppingcarts() {
         return this.shoppingcarts;
     }
 
-    public void setShoppingcarts(Set<Shoppingcart> shoppingcarts) {
+    public void setShoppingcarts(Set<ShoppingcartItem> shoppingcarts) {
         this.shoppingcarts = shoppingcarts;
     }
 
