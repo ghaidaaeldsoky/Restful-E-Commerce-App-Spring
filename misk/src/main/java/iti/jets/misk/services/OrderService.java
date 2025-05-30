@@ -131,7 +131,9 @@ public class OrderService {
         return orderRepo.findAll(pageable).getContent();
     }
 
-
+    public Order getCertainOrder(int OrderId) {
+        return orderRepo.findOrderByOrderId(OrderId).stream().findFirst().orElse(null);
+    }
 
 
 }
