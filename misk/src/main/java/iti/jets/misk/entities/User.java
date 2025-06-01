@@ -22,7 +22,7 @@ import java.util.Set;
 
 @ToString
 @Entity
-@Table(name = "user", catalog = "misk2", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

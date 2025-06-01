@@ -19,9 +19,7 @@ import java.util.Set;
 
 @ToString
 @Entity
-@Table(name="useraddress"
-    ,catalog="misk2"
-)
+@Table(name="useraddress")
 public class Useraddress  implements java.io.Serializable {
 
     @Id 
