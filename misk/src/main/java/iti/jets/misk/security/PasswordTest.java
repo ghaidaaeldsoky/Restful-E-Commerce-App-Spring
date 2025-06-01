@@ -2,6 +2,7 @@ package iti.jets.misk.security;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+//*********************added for testing purpose*****************************
 public class PasswordTest {
     public static void main(String[] args) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

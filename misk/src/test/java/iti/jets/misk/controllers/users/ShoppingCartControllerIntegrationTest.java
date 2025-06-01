@@ -112,7 +112,7 @@ class ShoppingCartControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test@example.com", roles = "USER")
+//    @WithMockUser(username = "test@example.com", roles = "USER")
     void addToCart_Authenticated_ShouldAddItemAndReturnCart() throws Exception {
         Product newProduct = new Product();
         newProduct.setName("New Product");
@@ -134,7 +134,7 @@ class ShoppingCartControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test@example.com", roles = "USER")
+//    @WithMockUser(username = "test@example.com", roles = "USER")
     void addToCart_Authenticated_ShouldFail_WhenProductNotFound() throws Exception {
         mockMvc.perform(post("/cart/add")
                         .param("productId", "999")
@@ -144,7 +144,7 @@ class ShoppingCartControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test@example.com", roles = "USER")
+//    @WithMockUser(username = "test@example.com", roles = "USER")
     void updateCartItem_Authenticated_ShouldUpdateQuantityAndReturnCart() throws Exception {
         mockMvc.perform(put("/cart/update")
                         .param("productId", String.valueOf(testProduct.getProductId()))
@@ -155,7 +155,7 @@ class ShoppingCartControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test@example.com", roles = "USER")
+//    @WithMockUser(username = "test@example.com", roles = "USER")
     void removeFromCart_ShouldReturnUpdatedCart() throws Exception {
 
         mockMvc.perform(delete("/cart/remove")
@@ -168,7 +168,7 @@ class ShoppingCartControllerIntegrationTest {
 
 
     @Test
-    @WithMockUser(username = "test@example.com", roles = "USER")
+//    @WithMockUser(username = "test@example.com", roles = "USER")
     void clearCart_Authenticated_ShouldClearCart() throws Exception {
         mockMvc.perform(delete("/cart/clear"))
                 .andExpect(status().isOk())
@@ -176,7 +176,7 @@ class ShoppingCartControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test@example.com", roles = "USER")
+//    @WithMockUser(username = "test@example.com", roles = "USER")
     void getCart_Authenticated_ShouldReturnCartItems() throws Exception {
         mockMvc.perform(get("/cart"))
                 .andExpect(status().isOk())
@@ -185,7 +185,7 @@ class ShoppingCartControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test@example.com", roles = "USER")
+//    @WithMockUser(username = "test@example.com", roles = "USER")
     void getCartCount_Authenticated_ShouldReturnCount() throws Exception {
         mockMvc.perform(get("/cart/count"))
                 .andExpect(status().isOk())
@@ -193,7 +193,7 @@ class ShoppingCartControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test@example.com", roles = "USER")
+//    @WithMockUser(username = "test@example.com", roles = "USER")
     void bulkAddToCart_Authenticated_ShouldAddMultipleItems() throws Exception {
         Product product2 = new Product();
         product2.setName("Product 2");
@@ -236,7 +236,7 @@ class ShoppingCartControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test@example.com", roles = "USER")
+//    @WithMockUser(username = "test@example.com", roles = "USER")
     void bulkAddToCart_Authenticated_ShouldSkipItemsWithZeroQuantity() throws Exception {
         Product product2 = new Product();
         product2.setName("Product 2");
@@ -278,7 +278,7 @@ class ShoppingCartControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test@example.com", roles = "USER")
+//    @WithMockUser(username = "test@example.com", roles = "USER")
     void removeCartItem_Authenticated_ShouldRemoveItem() throws Exception {
         mockMvc.perform(delete("/cart/remove")
                         .param("productId", String.valueOf(testProduct.getProductId())))
