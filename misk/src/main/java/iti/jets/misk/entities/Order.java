@@ -20,7 +20,8 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "order", catalog = "misk2")
+//(name = "order", catalog = "misk")
+@Table(name = "`order`")
 public class Order implements java.io.Serializable {
 
     private int orderId;

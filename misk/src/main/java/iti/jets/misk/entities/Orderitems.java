@@ -13,9 +13,7 @@ import jakarta.persistence.Table;
 
 
 @Entity
-@Table(name="orderitems"
-    ,catalog="misk2"
-)
+@Table(name="orderitems")
 public class Orderitems  implements java.io.Serializable {
 
 
