@@ -18,7 +18,7 @@ import iti.jets.misk.dtos.ProductFilterDto;
 import iti.jets.misk.services.ProductService;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/public/products")
 public class ProductUserController {
 
     @Autowired

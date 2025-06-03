@@ -15,7 +15,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "product", catalog = "misk2")
+@Table(name = "product")
 public class Product implements java.io.Serializable {
 
     @Id

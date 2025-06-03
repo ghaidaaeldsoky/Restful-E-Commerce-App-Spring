@@ -13,10 +13,11 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "shoppingcart", catalog = "misk2")
+@Table(name = "shoppingcart")
 public class Shoppingcart implements java.io.Serializable {
     @EmbeddedId
 
@@ -38,7 +39,7 @@ public class Shoppingcart implements java.io.Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "added_at", length = 19)
-    private Timestamp addedAt;
+    private LocalDateTime addedAt = LocalDateTime.now();
 
     public Shoppingcart() {
     }
@@ -50,7 +51,7 @@ public class Shoppingcart implements java.io.Serializable {
         this.quantity = quantity;
     }
 
-    public Shoppingcart(ShoppingcartId id, User user, Product product, int quantity, Timestamp addedAt) {
+    public Shoppingcart(ShoppingcartId id, User user, Product product, int quantity, LocalDateTime addedAt) {
         this.id = id;
         this.user = user;
         this.product = product;
@@ -94,11 +95,11 @@ public class Shoppingcart implements java.io.Serializable {
     }
 
     
-    public Timestamp getAddedAt() {
+    public LocalDateTime getAddedAt() {
         return this.addedAt;
     }
 
-    public void setAddedAt(Timestamp addedAt) {
+    public void setAddedAt(LocalDateTime addedAt) {
         this.addedAt = addedAt;
     }
 
