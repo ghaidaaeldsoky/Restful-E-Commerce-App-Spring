@@ -1,10 +1,14 @@
 package iti.jets.misk.services;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import iti.jets.misk.dtos.ProductCreateUpdateDto;
 import iti.jets.misk.dtos.ProductDto;
@@ -25,9 +29,11 @@ import jakarta.transaction.Transactional;
 public class ProductService {
 
     private final ProductRepo productRepo;
+    private final ImageService imageService;
 
-    public ProductService(ProductRepo productRepo) {
+    public ProductService(ProductRepo productRepo, ImageService imageService) {
         this.productRepo = productRepo;
+        this.imageService = imageService;
     }
 
     // Insert
@@ -71,7 +77,7 @@ public class ProductService {
     }
 
     // Update
-    
+
     public ProductDto updateProduct(int productId, ProductCreateUpdateDto dto) {
 
         Product product = productRepo.findById(productId)
@@ -108,6 +114,34 @@ public class ProductService {
 
         product.setIsDeleted(true);
         productRepo.save(product);
+
+    }
+
+    // Product With uploading image:
+    public ProductDto createProductWithImage(ProductCreateUpdateDto productDto, MultipartFile image)
+            throws IOException {
+        if (image != null && !image.isEmpty()) {
+            String imageName = imageService.uploadImage(image);
+            productDto.setPhoto(imageName);
+        }
+        Product product = ProductMapper.toEntity(productDto);
+        product = productRepo.save(product);
+        return ProductMapper.toResponseDto(product);
+    }
+
+    public ProductDto updateProductWithImage(Integer id, ProductCreateUpdateDto productUpdateDto, MultipartFile photo) {
+
+        if (photo != null && !photo.isEmpty()) {
+            try {
+                String img = imageService.uploadImage(photo);
+                productUpdateDto.setPhoto(img);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                throw new RuntimeException("Failed to save product image", e);
+            }
+        }
+
+        return updateProduct(id, productUpdateDto);
 
     }
 
