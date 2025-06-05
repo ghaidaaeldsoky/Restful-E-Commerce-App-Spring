@@ -2,6 +2,7 @@ package iti.jets.misk;
 
 import iti.jets.misk.dtos.OrderDto;
 import iti.jets.misk.entities.Order;
+import iti.jets.misk.services.EmailService;
 import iti.jets.misk.services.OrderService;
 import iti.jets.misk.utils.ValidationResult;
 import org.springframework.boot.SpringApplication;
@@ -9,9 +10,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.List;
 
+@EnableAsync
 @EnableCaching
 @SpringBootApplication
 public class MiskApplication {
@@ -53,7 +56,12 @@ public class MiskApplication {
 //
 //		var allOrderss = bean.getAllOrders(2, 2);
 //
-//
+////
+//		EmailService bean = run.getBean(EmailService.class);
+//		String message = "This is a test email from Misk Application" +
+//				"كـــــــل خيـــــر وانتــــم بعـــام ";
+//		bean.sendSimpleEmail("ghaidaaeldsoky@gmail.com", "Test Email", message);
+
 
 	}
 
