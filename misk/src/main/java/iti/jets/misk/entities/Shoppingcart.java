@@ -12,10 +12,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.ToString;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-
+@ToString(exclude = {"user", "product"})
 @Entity
 @Table(name = "shoppingcart")
 public class Shoppingcart implements java.io.Serializable {

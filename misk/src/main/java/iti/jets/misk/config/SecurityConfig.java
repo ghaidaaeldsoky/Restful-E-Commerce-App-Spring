@@ -7,6 +7,7 @@ import java.security.interfaces.RSAPublicKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,7 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 
+@EnableMethodSecurity
 @Configuration
 public class SecurityConfig {
 
@@ -53,7 +55,7 @@ private RSAPrivateKey privateKey;
         return httpSecurity
         .csrf(csrf->csrf.disable())
         .authorizeHttpRequests(
-            auth->auth.requestMatchers("/users/login")
+            auth->auth.requestMatchers("/users/login","/users/register")
             .permitAll()
             .anyRequest()
             .authenticated()
@@ -79,6 +81,6 @@ private RSAPrivateKey privateKey;
 
         return authenticationConverter;
     }
-   
+
 
 }

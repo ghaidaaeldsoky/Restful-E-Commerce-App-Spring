@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-@ToString
+@ToString(exclude = {"orders", "useraddresses", "shoppingcarts"})
 @Entity
 @Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User implements java.io.Serializable {

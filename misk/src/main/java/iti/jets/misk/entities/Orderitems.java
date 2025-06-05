@@ -16,8 +16,9 @@ import jakarta.persistence.Table;
 @Table(name="orderitems")
 public class Orderitems  implements java.io.Serializable {
 
-
      private OrderitemsId id;
+
+
      private Order order;
      private Product product;
      private int quantity;
@@ -33,8 +34,6 @@ public class Orderitems  implements java.io.Serializable {
     }
    
      @EmbeddedId
-
-    
     @AttributeOverrides( {
         @AttributeOverride(name="orderId", column=@Column(name="order_id", nullable=false) ), 
         @AttributeOverride(name="productId", column=@Column(name="product_id", nullable=false) ) } )
