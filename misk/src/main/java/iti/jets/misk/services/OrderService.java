@@ -10,6 +10,8 @@ import iti.jets.misk.repositories.*;
 import iti.jets.misk.utils.AuthenticationUtil;
 import iti.jets.misk.utils.ValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -103,7 +105,7 @@ public class OrderService {
         }
     }
 
-
+    @CacheEvict(value = "orders",allEntries = true )
     @Transactional(rollbackFor = Exception.class)
    public String confirmOrder(ValidationResult data) throws OrderConfirmationException {
 
@@ -169,10 +171,12 @@ public class OrderService {
 
     }
 
+
     @Transactional
     public String placeOrder(int addressId) {
 
-        int userId = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName());
+       // int userId = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName());
+        int userId = 1;
 
         ValidationResult result = validateOrder(userId, addressId);
         if (!result.isValid()) {
@@ -185,7 +189,7 @@ public class OrderService {
     }
 
 
-
+    @Cacheable(value = "orders", key = "#pageNumber + '-' + #pageSize")
     @Transactional
     public List<OrderDto> getAllOrders(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
