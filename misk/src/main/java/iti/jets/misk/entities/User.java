@@ -18,7 +18,8 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
-
+//public record UserInfoDto(String userName, String phoneNumber, String email, String birthDay, String job, String creditLimit, String intersets,String password) {
+//}
 
 @ToString(exclude = {"orders", "useraddresses", "shoppingcarts"})
 @Entity

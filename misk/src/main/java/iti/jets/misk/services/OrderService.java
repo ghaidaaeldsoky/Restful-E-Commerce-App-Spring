@@ -40,9 +40,6 @@ public class OrderService {
     ShoppingCartRepo shoppingCartRepo;
 
     @Autowired
-    AuthenticationUtil authenticationUtil;
-
-    @Autowired
     OrderMapper orderMapper;
 
     @Transactional

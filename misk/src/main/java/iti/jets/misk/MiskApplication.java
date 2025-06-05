@@ -18,10 +18,9 @@ public class MiskApplication {
 
 		ConfigurableApplicationContext run = SpringApplication.run(MiskApplication.class, args);
 		OrderService bean = run.getBean(OrderService.class);
-	ValidationResult validationResult = bean.validateOrder(1,1);
-	System.out.println(validationResult.isValid());
-System.out.println(validationResult.getMessage());
-
+		ValidationResult validationResult = bean.validateOrder(1, 1);
+		System.out.println(validationResult.isValid());
+		System.out.println(validationResult.getMessage());
 
 
 //
@@ -45,8 +44,6 @@ System.out.println(validationResult.getMessage());
 //		for (OrderDto allOrder : allOrders) {
 //			allOrder.toStrings();
 //		}
-
-
 
 
 	}
