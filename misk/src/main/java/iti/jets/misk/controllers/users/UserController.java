@@ -57,13 +57,10 @@ public class UserController {
     {
         if(userService.checkEmailAvilibity(dto.email()))
         {
-            throw new ErrorResponseException(HttpStatus.BAD_REQUEST, new UserAlreadyExistException("you have an already account"));
+            throw new UserAlreadyExistException("you have an already account");
         }
-
         User user = userService.saveUser(dto);
-        if (user == null) {
-            throw new ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR, new RuntimeException("Failed to create user"));
-        }
+
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
 

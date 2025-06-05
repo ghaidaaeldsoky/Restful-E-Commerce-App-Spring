@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -48,6 +49,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OrderConfirmationException.class)
     public ResponseEntity<String> handleOrderConfirmationException(OrderConfirmationException ex) {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.getMessage());
+    }
+
+
+
+    @ExceptionHandler(UserRegisterationException.class)
+    public ResponseEntity<String> handleException(UserRegisterationException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+
     }
 
 

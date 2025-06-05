@@ -7,6 +7,7 @@ import iti.jets.misk.entities.Order;
 import iti.jets.misk.entities.User;
 import iti.jets.misk.entities.Useraddress;
 import iti.jets.misk.exceptions.UserNotFoundException;
+import iti.jets.misk.exceptions.UserRegisterationException;
 import iti.jets.misk.mappers.UserInfoMapper;
 import iti.jets.misk.mappers.UserMapper;
 import iti.jets.misk.repositories.UserRepository;
@@ -14,7 +15,9 @@ import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.ErrorResponseException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -93,9 +96,14 @@ public class UserService {
 
      public User saveUser(UserInfoDto dto)
     {
-        User user = userInfoMapper.userInfoDtotoUser(dto);
+        try {
+            User user = userInfoMapper.userInfoDtotoUser(dto);
 
-        return userRepository.save(user);
+            return userRepository.save(user);
+        }
+        catch(Exception e){
+            throw new UserRegisterationException("Failed to create user");
+        }
     }
 
      BigDecimal getUserCreditCardLimit(int id)
