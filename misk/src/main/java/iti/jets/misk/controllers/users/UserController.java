@@ -61,6 +61,9 @@ public class UserController {
         }
 
         User user = userService.saveUser(dto);
+        if (user == null) {
+            throw new ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR, new RuntimeException("Failed to create user"));
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
 

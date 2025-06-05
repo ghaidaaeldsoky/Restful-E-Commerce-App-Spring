@@ -28,7 +28,6 @@ public interface UserRepository extends JpaRepository<User, Integer> ,Customized
 
      User save(User user);
 
-
      @Query("select u.creditLimit from User u where u.id=:id")
   BigDecimal getUserCreditCardLimit(@Param("id")int id);
 
