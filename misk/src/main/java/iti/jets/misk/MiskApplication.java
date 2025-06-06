@@ -2,7 +2,7 @@ package iti.jets.misk;
 
 import iti.jets.misk.dtos.OrderDto;
 import iti.jets.misk.entities.Order;
-import iti.jets.misk.services.EmailService;
+//import iti.jets.misk.services.EmailService;
 import iti.jets.misk.services.OrderService;
 import iti.jets.misk.utils.ValidationResult;
 import org.springframework.boot.SpringApplication;
