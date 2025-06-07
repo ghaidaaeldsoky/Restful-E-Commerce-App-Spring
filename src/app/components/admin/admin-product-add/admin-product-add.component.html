@@ -37,10 +37,11 @@
 
       <div class="col-md-6">
         <div class="form-group mb-3">
-          <label class="form-label">Brand</label>
+          <label class="form-label">Brand <span class="text-danger">*</span></label>
           <input class="form-control" 
                  [(ngModel)]="product.brand" 
-                 name="brand">
+                 name="brand"
+                 required>
         </div>
       </div>
 
@@ -81,16 +82,17 @@
 
       <div class="col-md-4">
         <div class="form-group mb-3">
-          <label class="form-label">Size</label>
+          <label class="form-label">Size <span class="text-danger">*</span></label>
           <input class="form-control" 
                  [(ngModel)]="product.size" 
-                 name="size">
+                 name="size"
+                 required>
         </div>
       </div>
 
       <div class="col-md-6">
         <div class="form-group mb-3">
-          <label class="form-label">Gender</label>
+          <label class="form-label">Gender <span class="text-danger">*</span></label>
           <select class="form-control" 
                   [(ngModel)]="product.gender" 
                   name="gender"
