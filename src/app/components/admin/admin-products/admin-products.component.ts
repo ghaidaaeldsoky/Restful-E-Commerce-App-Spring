@@ -90,8 +90,8 @@ export class AdminProductsComponent implements OnInit{
     }
   }
 
-  editProduct(product: Product) {
-    this.router.navigate(['/products', product.id, 'edit']);
+  editProduct(product: ProductDto) {
+    this.router.navigate(['/products', product.productId, 'edit']);
   }
 
   addNewProduct(): void {

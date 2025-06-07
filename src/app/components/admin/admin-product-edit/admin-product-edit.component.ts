@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProductDto, ProductsService } from '../../../services/admin/products.service';
 
 interface Product {
   id?: number;
@@ -28,44 +29,57 @@ interface FieldChange {
 export class AdminProductEditComponent implements OnInit {
 
   productId!: number;
-  product: Product | null = null;
-  originalProduct: Product | null = null;
+  product: ProductDto | null = null;
+  originalProduct: ProductDto | null = null;
   isEditMode: boolean = false;
   changedFields: { [key: string]: { oldValue: any; newValue: any } } = {};
 
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router, private productsService:ProductsService) {}
 
   ngOnInit(): void {
     this.productId = Number(this.route.snapshot.paramMap.get('id'));
 
     // Simulate fetch from DB or service
-    this.product = {
-      name: `Perfume A`,
-      description: 'Luxury perfume',
-      price: 150 ,
-      quantity: 10,
-      brand: 'MISK',
-      gender: 'female',
-      size: '100ml',
-      imageUrl: 'https://via.placeholder.com/60',
+    // this.product = {
+    //   name: `Perfume A`,
+    //   description: 'Luxury perfume',
+    //   price: 150 ,
+    //   quantity: 10,
+    //   brand: 'MISK',
+    //   gender: 'female',
+    //   size: '100ml',
+    //   imageUrl: 'https://via.placeholder.com/60',
+    // }
+
+    this.isEditMode = true;
+
+  this.productsService.getProductById(this.productId).subscribe({
+    next: (data) => {
+      this.product = data;
+      this.originalProduct = { ...data };
+    },
+    error: (err) => {
+      console.error('Error fetching product', err);
+      alert('Error fetching product');
     }
+  });
   }
 
 
 
-  initializeNewProduct(): void {
-    this.product = {
-      name: '',
-      description: '',
-      price: 0,
-      quantity: 0,
-      brand: '',
-      gender: '',
-      size: '',
-      imageUrl: 'https://via.placeholder.com/100',
-    };
-  }
+  // initializeNewProduct(): void {
+  //   this.product = {
+  //     name: '',
+  //     description: '',
+  //     price: 0,
+  //     quantity: 0,
+  //     brand: '',
+  //     gender: '',
+  //     size: '',
+  //     photo: 'https://via.placeholder.com/100',
+  //   };
+  // }
 
   onImageSelected(event: Event): void {
     const target = event.target as HTMLInputElement;
@@ -90,11 +104,11 @@ export class AdminProductEditComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = (e) => {
         if (this.product && e.target?.result) {
-          const oldImageUrl = this.product.imageUrl;
-          this.product.imageUrl = e.target.result as string;
+          const oldImageUrl = this.product.photo;
+          this.product.photo = e.target.result as string;
           
           if (this.isEditMode) {
-            this.trackChange('imageUrl', this.product.imageUrl, oldImageUrl);
+            this.trackChange('imageUrl', this.product.photo, oldImageUrl);
           }
         }
       };
@@ -126,7 +140,7 @@ export class AdminProductEditComponent implements OnInit {
     } else {
       // Fallback - create a sample product if not found
       this.product = {
-        id: this.productId,
+        productId: this.productId,
         name: `Perfume ${this.productId}`,
         description: 'Luxury perfume with long-lasting fragrance',
         price: 150,
@@ -134,7 +148,7 @@ export class AdminProductEditComponent implements OnInit {
         brand: 'MISK',
         gender: 'unisex',
         size: '100ml',
-        imageUrl: 'https://via.placeholder.com/100',
+        photo: 'https://via.placeholder.com/100',
       };
       this.originalProduct = { ...this.product };
     }
@@ -212,7 +226,7 @@ export class AdminProductEditComponent implements OnInit {
     } else {
       // Create new product
       const newId = products.length > 0 ? Math.max(...products.map((p: Product) => p.id || 0)) + 1 : 1;
-      this.product.id = newId;
+      this.product.productId = newId;
       
       products.push(this.product);
       // localStorage.setItem('products', JSON.stringify(products));
