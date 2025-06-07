@@ -39,7 +39,8 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/vendors/themify-icons/themify-icons.css"
             ],
             "scripts": []
           },
