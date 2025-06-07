@@ -37,7 +37,7 @@ export class ProductsService {
     let params = new HttpParams()
       .set('page', page)
       .set('size', size)
-      .set('isDeleted',false)
+      .set('isDeleted', false)
 
 
     if (searchTerm) {
@@ -54,16 +54,39 @@ export class ProductsService {
 
   // Edit product just with specific changes
   patchProduct(id: number, changedFields: any, photoFile?: File): Observable<ProductDto> {
+    const formData = new FormData();
+
+    // JSON.stringify the changed fields (dto-style object)
+    formData.append('product', JSON.stringify(changedFields));
+
+    // Append photo if changed
+    if (photoFile) {
+      formData.append('photo', photoFile);
+    }
+
+    return this.http.patch<ProductDto>(`${this.apiUrl}/${id}`, formData);
+  }
+
+
+  // Delete Product
+  deleteProduct(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  // Add new Product
+  addProduct(product: any, photoFile?: File): Observable<ProductDto> {
   const formData = new FormData();
 
-  // JSON.stringify the changed fields (dto-style object)
-  formData.append('product', JSON.stringify(changedFields));
+  // Append product JSON as a string part
+  formData.append('product', JSON.stringify(product));
 
-  // Append photo if changed
+  // Append photo file if exists
   if (photoFile) {
     formData.append('photo', photoFile);
   }
 
-  return this.http.patch<ProductDto>(`${this.apiUrl}/${id}`, formData);
+  return this.http.post<ProductDto>(this.apiUrl, formData);
 }
+
+
 }

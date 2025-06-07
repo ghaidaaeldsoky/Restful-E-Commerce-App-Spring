@@ -81,14 +81,22 @@ export class AdminProductsComponent implements OnInit{
   }
 
    confirmDelete(product: ProductDto): void {
-    const confirmDelete = window.confirm(`Are you sure you want to delete ${product.name}?`);
-    if (confirmDelete) {
-      // implement delete logic (call API), then reload:
-      this.successMessage = 'Deleted successfully.';
-      setTimeout(() => (this.successMessage = null), 2000);
-      this.loadProducts();
-    }
+  const confirmDelete = window.confirm(`Are you sure you want to delete ${product.name}? with id ${product.productId}`);
+  if (confirmDelete) {
+    this.productsService.deleteProduct(product.productId).subscribe({
+      next: () => {
+        this.successMessage = 'Deleted successfully.';
+        this.loadProducts(); // Reload the list to reflect the deletion
+        setTimeout(() => (this.successMessage = null), 2000);
+      },
+      error: (err) => {
+        console.error('Delete failed:', err);
+        alert('Delete failed. Please try again.');
+      }
+    });
   }
+}
+
 
   editProduct(product: ProductDto) {
     this.router.navigate(['/products', product.productId, 'edit']);

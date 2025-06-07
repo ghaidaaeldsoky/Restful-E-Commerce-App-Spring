@@ -25,6 +25,7 @@
     <table class="table custom-table">
       <thead>
         <tr>
+          <th>No.</th>
           <th>Photo</th>
           <th>Name</th>
           <th>Description</th>
@@ -37,7 +38,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let p of products">
+        <tr *ngFor="let p of products;  let i = index">
+          <td>{{ (currentPage) * itemsPerPage + i + 1 }}</td>
           <td><img [src]="p.photo" width="60" /></td>
           <td>{{ p.name }}</td>
           <td>{{ p.description }}</td>
