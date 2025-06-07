@@ -33,6 +33,7 @@ export class AdminProductEditComponent implements OnInit {
   originalProduct: ProductDto | null = null;
   isEditMode: boolean = false;
   changedFields: { [key: string]: { oldValue: any; newValue: any } } = {};
+  photoFile: File | null = null;
 
 
   constructor(private route: ActivatedRoute, private router: Router, private productsService:ProductsService) {}
@@ -82,53 +83,39 @@ export class AdminProductEditComponent implements OnInit {
   // }
 
   onImageSelected(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    const file = target.files?.[0];
-    
-    if (file) {
-      // Validate file type
-      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
-      if (!allowedTypes.includes(file.type)) {
-        alert('Please select a valid image file (JPG, PNG, or GIF)');
-        return;
-      }
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0];
 
-      // Validate file size (max 5MB)
-      const maxSize = 5 * 1024 * 1024;
-      if (file.size > maxSize) {
-        alert('File size must be less than 5MB');
-        return;
-      }
+  if (file) {
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    const maxSize = 5 * 1024 * 1024;
 
-      // Create a FileReader to convert file to base64
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (this.product && e.target?.result) {
-          const oldImageUrl = this.product.photo;
-          this.product.photo = e.target.result as string;
-          
-          if (this.isEditMode) {
-            this.trackChange('imageUrl', this.product.photo, oldImageUrl);
-          }
-        }
-      };
-      reader.readAsDataURL(file);
+    if (!allowedTypes.includes(file.type)) {
+      alert('Please select a valid image file (JPG, PNG, or GIF)');
+      return;
     }
 
-  }
+    if (file.size > maxSize) {
+      alert('File size must be less than 5MB');
+      return;
+    } 
 
-  saveProduct(): void {
-    if (!this.product) return;
+    // Set the file
+    this.photoFile = file;
 
-    // TODO: Replace with actual service call
-    console.log('Product to update:', this.product);
-    
-    // Simulate API call
-    setTimeout(() => {
-      alert(`Product "${this.product!.name}" has been updated successfully!`);
-      this.router.navigate(['/products']);
-    }, 500);
+    // Preview the image
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (this.product && e.target?.result) {
+        const oldImageUrl = this.product.photo;
+        this.product.photo = e.target.result as string;
+
+        this.trackChange('photo', this.product.photo, oldImageUrl);
+      }
+    };
+    reader.readAsDataURL(file);
   }
+}
 
   loadProduct(): void {
     const products = JSON.parse(localStorage.getItem('products') || '[]');
@@ -251,5 +238,39 @@ export class AdminProductEditComponent implements OnInit {
   //   alert('Saved!');
   //   this.router.navigate(['/products']);
   // }
+
+  preparePatchPayload(): any {
+  const dto: any = {};
+
+  for (const field in this.changedFields) {
+    const value = (this.product as any)[field];
+    if (field === 'photo') continue; // handled as File separately
+    dto[field] = value;
+  }
+
+  return dto;
+}
+
+saveProduct(): void {
+  if (!this.product || !this.hasChanges()) {
+    alert('No changes to save.');
+    return;
+  }
+
+  const patchData = this.preparePatchPayload();
+
+  this.productsService.patchProduct(this.productId, patchData, this.photoFile ?? undefined)
+    .subscribe({
+      next: (updatedProduct) => {
+        alert(`Product "${updatedProduct.name}" updated successfully.`);
+        this.router.navigate(['/products']);
+      },
+      error: (err) => {
+        console.error('Error updating product:', err);
+        alert('Failed to update product');
+      }
+    });
+}
+
 
 }

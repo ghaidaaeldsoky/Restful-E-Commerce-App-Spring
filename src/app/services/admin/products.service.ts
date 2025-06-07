@@ -32,6 +32,7 @@ export class ProductsService {
 
   constructor(private http: HttpClient) { }
 
+  // Get all non-deleted Products
   getProducts(page: number, size: number, searchTerm: string): Observable<ProductResponse> {
     let params = new HttpParams()
       .set('page', page)
@@ -46,7 +47,23 @@ export class ProductsService {
     return this.http.get<ProductResponse>(this.apiUrl, { params });
   }
 
+  // Get Product detail for this Product
   getProductById(id: number): Observable<ProductDto> {
     return this.http.get<ProductDto>(`${this.apiUrl}/${id}`);
   }
+
+  // Edit product just with specific changes
+  patchProduct(id: number, changedFields: any, photoFile?: File): Observable<ProductDto> {
+  const formData = new FormData();
+
+  // JSON.stringify the changed fields (dto-style object)
+  formData.append('product', JSON.stringify(changedFields));
+
+  // Append photo if changed
+  if (photoFile) {
+    formData.append('photo', photoFile);
+  }
+
+  return this.http.patch<ProductDto>(`${this.apiUrl}/${id}`, formData);
+}
 }
