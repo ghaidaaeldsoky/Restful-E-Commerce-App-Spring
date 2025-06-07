@@ -9,7 +9,7 @@
       <input
         type="text"
         class="form-control"
-        placeholder="Search by name or brand..."
+        placeholder="Search by name ..."
         [(ngModel)]="searchTerm"
         (input)="filterProducts()"
       />
@@ -37,8 +37,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let p of paginatedProducts">
-          <td><img [src]="p.imageUrl" alt="img" width="50" /></td>
+        <tr *ngFor="let p of products">
+          <td><img [src]="p.photo" width="60" /></td>
           <td>{{ p.name }}</td>
           <td>{{ p.description }}</td>
           <td>{{ p.price | currency }}</td>
@@ -47,7 +47,10 @@
           <td>{{ p.size }}</td>
           <td>{{ p.gender }}</td>
           <td>
-            <button class="btn btn-sm btn-primary" (click)="editProduct(p)">
+            <button class="btn btn-sm btn-primary" 
+            
+            >
+            <!-- (click)="editProduct(p)" -->
               <i class="fa fa-edit"></i>
             </button>
 

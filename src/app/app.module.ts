@@ -11,6 +11,7 @@ import { AdminProductsComponent } from './components/admin/admin-products/admin-
 import { FormsModule } from '@angular/forms';
 import { AdminProductEditComponent } from './components/admin/admin-product-edit/admin-product-edit.component';
 import { AdminProductAddComponent } from './components/admin/admin-product-add/admin-product-add.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AdminProductAddComponent } from './components/admin/admin-product-add/a
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
