@@ -1,3 +1,4 @@
+<app-banner></app-banner>
 <section class="section-margin calc-60px">
   <div class="container">
     <div class="section-intro pb-60px">
@@ -27,7 +28,7 @@
             <span
               *ngIf="perfume.quantity === 0"
               class="badge position-absolute top-0 end-0 m-2"
-              style="font-size: 0.8rem; background-color: #384AEB; border: 1px solid white; color: white; padding: 5px 10px; font-weight: bold;"
+              style="font-size: 0.8rem; background-color: #384AEB; border: 1px solid white; color: white; padding: 5px 10px; font-weight: bold; z-index: 2;"
             >
               SOLD OUT
             </span>
@@ -51,3 +52,4 @@
     </div>
   </div>
 </section>
+<app-before-footer></app-before-footer>

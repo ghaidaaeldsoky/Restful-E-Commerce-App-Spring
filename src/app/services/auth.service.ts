@@ -5,7 +5,9 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
   login(): void {
-    localStorage.setItem('userId', '1'); // simulate login
+    const newUserId = '1';
+    const currentUserId = this.getUserId();
+    localStorage.setItem('userId', newUserId);
   }
 
   logout(): void {

@@ -44,4 +44,8 @@ export class ProductService {
   getTrendingProducts(): Product[] {
     return this.products;
   }
+
+    getProductById(id: number): Product | undefined {
+    return this.products.find(p => p.id === id);
+  }
 }
