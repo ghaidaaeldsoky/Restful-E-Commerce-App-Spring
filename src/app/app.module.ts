@@ -7,6 +7,8 @@ import { FooterComponent } from './components/footer/footer.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { BannerComponent } from './components/banner/banner.component';
 import { BeforeFooterComponent } from './components/before-footer/before-footer.component';
+import { ProductComponent } from './components/product/product.component';
+import { TrendingProductsComponent } from './components/trending-products/trending-products.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { BeforeFooterComponent } from './components/before-footer/before-footer.
     FooterComponent,
     NavbarComponent,
     BannerComponent,
-    BeforeFooterComponent
+    BeforeFooterComponent,
+    ProductComponent,
+    TrendingProductsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,53 @@
+<section class="section-margin calc-60px">
+  <div class="container">
+    <div class="section-intro pb-60px">
+      <p>Popular Item in the market</p>
+      <h2>Trending <span class="section-intro__style">Product</span></h2>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 col-lg-3 col-xl-4" *ngFor="let perfume of trendingProducts">
+        <div class="card text-center card-product">
+          <div class="card-product__img position-relative" style="width: 100%;">
+            <img [src]="perfume.imageUrl" [alt]="perfume.name" class="card-img" style="width: 76%;" />
+
+            <ul class="card-product__imgOverlay">
+              <li>
+                <a [routerLink]="['/product-details']" [queryParams]="{ id: perfume.id, name: perfume.name }">
+                  <i class="ti-eye"></i>
+                </a>
+              </li>
+              <li *ngIf="perfume.quantity > 0">
+                <button type="button" style="color: white;" (click)="addToCart(perfume)">
+                  <i class="ti-shopping-cart" style="margin-right: 5px;"></i>Add to cart
+                </button>
+              </li>
+            </ul>
+
+            <span
+              *ngIf="perfume.quantity === 0"
+              class="badge position-absolute top-0 end-0 m-2"
+              style="font-size: 0.8rem; background-color: #384AEB; border: 1px solid white; color: white; padding: 5px 10px; font-weight: bold;"
+            >
+              SOLD OUT
+            </span>
+          </div>
+
+          <div class="card-body">
+            <p>{{ perfume.brand }}</p>
+            <h4 class="card-product__title">
+              <a [routerLink]="['/product-details']" [queryParams]="{ id: perfume.id, name: perfume.name }">
+                {{ perfume.name }}
+              </a>
+            </h4>
+            <p class="card-product__price">{{ perfume.price }} EGP</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="button_container mt-4 d-flex align-items-center justify-content-center">
+      <button class="button btn-outline-primary btn-lg m-3" routerLink="/shop">Discover more</button>
+    </div>
+  </div>
+</section>
