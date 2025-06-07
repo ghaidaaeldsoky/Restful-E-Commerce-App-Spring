@@ -31,34 +31,18 @@ export class AdminProductEditComponent implements OnInit {
   productId!: number;
   product: ProductDto | null = null;
   originalProduct: ProductDto | null = null;
-  isEditMode: boolean = false;
   changedFields: { [key: string]: { oldValue: any; newValue: any } } = {};
   photoFile: File | null = null;
-
 
   constructor(private route: ActivatedRoute, private router: Router, private productsService:ProductsService) {}
 
   ngOnInit(): void {
     this.productId = Number(this.route.snapshot.paramMap.get('id'));
 
-    // Simulate fetch from DB or service
-    // this.product = {
-    //   name: `Perfume A`,
-    //   description: 'Luxury perfume',
-    //   price: 150 ,
-    //   quantity: 10,
-    //   brand: 'MISK',
-    //   gender: 'female',
-    //   size: '100ml',
-    //   imageUrl: 'https://via.placeholder.com/60',
-    // }
-
-    this.isEditMode = true;
-
   this.productsService.getProductById(this.productId).subscribe({
     next: (data) => {
       this.product = data;
-      this.originalProduct = { ...data };
+      this.originalProduct =JSON.parse(JSON.stringify(data));
     },
     error: (err) => {
       console.error('Error fetching product', err);
@@ -67,21 +51,7 @@ export class AdminProductEditComponent implements OnInit {
   });
   }
 
-
-
-  // initializeNewProduct(): void {
-  //   this.product = {
-  //     name: '',
-  //     description: '',
-  //     price: 0,
-  //     quantity: 0,
-  //     brand: '',
-  //     gender: '',
-  //     size: '',
-  //     photo: 'https://via.placeholder.com/100',
-  //   };
-  // }
-
+  // When user upload new photo
   onImageSelected(event: Event): void {
   const target = event.target as HTMLInputElement;
   const file = target.files?.[0];
@@ -117,41 +87,13 @@ export class AdminProductEditComponent implements OnInit {
   }
 }
 
-  loadProduct(): void {
-    const products = JSON.parse(localStorage.getItem('products') || '[]');
-    const foundProduct = products.find((p: Product) => p.id === this.productId);
-    
-    if (foundProduct) {
-      this.product = { ...foundProduct };
-      this.originalProduct = { ...foundProduct };
-    } else {
-      // Fallback - create a sample product if not found
-      this.product = {
-        productId: this.productId,
-        name: `Perfume ${this.productId}`,
-        description: 'Luxury perfume with long-lasting fragrance',
-        price: 150,
-        quantity: 10,
-        brand: 'MISK',
-        gender: 'unisex',
-        size: '100ml',
-        photo: 'https://via.placeholder.com/100',
-      };
-      this.originalProduct = { ...this.product };
-    }
-  }
-
-
-   trackChange(field: string, newValue: any, oldValue?: any): void {
-    if (!this.isEditMode || !this.originalProduct) return;
+trackChange(field: string, newValue: any, oldValue?: any): void {
+    if (!this.originalProduct) return;
 
     const originalValue = oldValue !== undefined ? oldValue : (this.originalProduct as any)[field];
     
     if (newValue !== originalValue) {
-      this.changedFields[field] = {
-        oldValue: originalValue,
-        newValue: newValue
-      };
+      this.changedFields[field] = { oldValue: originalValue, newValue };
     } else {
       // If value is reverted to original, remove from changed fields
       delete this.changedFields[field];
@@ -162,96 +104,20 @@ export class AdminProductEditComponent implements OnInit {
     return Object.keys(this.changedFields).length > 0;
   }
 
-  getChanges(): FieldChange[] {
-    return Object.entries(this.changedFields).map(([field, change]) => ({
-      field: this.getFieldDisplayName(field),
-      oldValue: change.oldValue,
-      newValue: change.newValue
-    }));
-  }
-
-  private getFieldDisplayName(field: string): string {
-    const fieldNames: { [key: string]: string } = {
-      'name': 'Product Name',
-      'description': 'Description',
-      'price': 'Price',
-      'quantity': 'Quantity',
-      'brand': 'Brand',
-      'gender': 'Gender',
-      'size': 'Size',
-      'imageUrl': 'Product Image'
-    };
-    return fieldNames[field] || field;
-  }
-
-  resetForm(): void {
-    if (this.originalProduct && this.isEditMode) {
-      this.product = { ...this.originalProduct };
-      this.changedFields = {};
-    }
-  }
-
-  save(): void {
-    if (!this.product) return;
-
-    let products = JSON.parse(localStorage.getItem('products') || '[]');
-    
-    if (this.isEditMode) {
-      // Update existing product
-      const index = products.findIndex((p: Product) => p.id === this.productId);
-      if (index !== -1) {
-        products[index] = { ...this.product };
-        
-        const changesCount = Object.keys(this.changedFields).length;
-        const changeMessage = changesCount > 0 
-          ? ` (${changesCount} field${changesCount > 1 ? 's' : ''} updated)`
-          : '';
-        
-        localStorage.setItem('products', JSON.stringify(products));
-        alert(`Product "${this.product.name}" has been updated successfully${changeMessage}!`);
-      }
-    } else {
-      // Create new product
-      const newId = products.length > 0 ? Math.max(...products.map((p: Product) => p.id || 0)) + 1 : 1;
-      this.product.productId = newId;
-      
-      products.push(this.product);
-      // localStorage.setItem('products', JSON.stringify(products));
-      alert(`Product "${this.product.name}" has been created successfully!`);
-    }
-
-    this.router.navigate(['/products']);
-  }
-
-  goBack(): void {
-    if (this.hasChanges()) {
-      const confirmLeave = confirm(
-        'You have unsaved changes. Are you sure you want to leave this page?'
-      );
-      if (!confirmLeave) return;
-    }
-    
-    this.router.navigate(['/products']);
-  }
-
-  // save() {
-  //   alert('Saved!');
-  //   this.router.navigate(['/products']);
-  // }
-
   preparePatchPayload(): any {
   const dto: any = {};
 
   for (const field in this.changedFields) {
     const value = (this.product as any)[field];
     if (field === 'photo') continue; // handled as File separately
-    dto[field] = value;
+    dto[field] = (this.product as any)[field];
   }
 
   return dto;
-}
+  
+  }
 
-saveProduct(): void {
+  saveProduct(): void {
   if (!this.product || !this.hasChanges()) {
     alert('No changes to save.');
     return;
@@ -272,5 +138,64 @@ saveProduct(): void {
     });
 }
 
+goBack(): void {
+    if (this.hasChanges()) {
+      const confirmLeave = confirm(
+        'You have unsaved changes. Are you sure you want to leave this page?'
+      );
+      if (!confirmLeave) return;
+    }
+    
+    this.router.navigate(['/products']);
+  }
 
+  resetForm(): void {
+    if (this.originalProduct) {
+      this.product = { ...this.originalProduct };
+      this.changedFields = {};
+    }
+  }
+   // Optional: get readable field names if needed in a confirmation popup
+  getChangedFieldsForDisplay(): { field: string; oldValue: any; newValue: any }[] {
+    const fieldNames: { [key: string]: string } = {
+      name: 'Product Name',
+      description: 'Description',
+      price: 'Price',
+      quantity: 'Quantity',
+      brand: 'Brand',
+      gender: 'Gender',
+      size: 'Size',
+      photo: 'Product Image'
+    };
+    return Object.entries(this.changedFields).map(([field, change]) => ({
+      field: fieldNames[field] || field,
+      oldValue: change.oldValue,
+      newValue: change.newValue
+    }));
+  }
 }
+
+
+// save(): void {
+//     if (!this.product) return;
+
+//     let products = JSON.parse(localStorage.getItem('products') || '[]');
+    
+//     // if (this.isEditMode) {
+//       // Update existing product
+//       const index = products.findIndex((p: Product) => p.id === this.productId);
+//       if (index !== -1) {
+//         products[index] = { ...this.product };
+        
+//         const changesCount = Object.keys(this.changedFields).length;
+//         const changeMessage = changesCount > 0 
+//           ? ` (${changesCount} field${changesCount > 1 ? 's' : ''} updated)`
+//           : '';
+        
+//         localStorage.setItem('products', JSON.stringify(products));
+//         alert(`Product "${this.product.name}" has been updated successfully in save${changeMessage}!`);
+//       }
+//     // }
+
+//     this.router.navigate(['/products']);
+//   }
