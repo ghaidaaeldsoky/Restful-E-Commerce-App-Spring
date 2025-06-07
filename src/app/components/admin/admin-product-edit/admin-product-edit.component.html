@@ -1,0 +1,183 @@
+<!-- <div class="container-fluid">
+  <h2 class="section-intro__style mb-4">Edit Product</h2>
+
+  <form *ngIf="product" (ngSubmit)="save()">
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label>Name</label>
+        <input class="form-control" [(ngModel)]="product.name" name="name">
+      </div>
+      <div class="form-group col-md-6">
+        <label>Brand</label>
+        <input class="form-control" [(ngModel)]="product.brand" name="brand">
+      </div>
+      <div class="form-group col-md-12">
+        <label>Description</label>
+        <textarea class="form-control" [(ngModel)]="product.description" name="desc"></textarea>
+      </div>
+      <div class="form-group col-md-4">
+        <label>Price</label>
+        <input type="number" class="form-control" [(ngModel)]="product.price" name="price">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Quantity</label>
+        <input type="number" class="form-control" [(ngModel)]="product.quantity" name="qty">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Size</label>
+        <input class="form-control" [(ngModel)]="product.size" name="size">
+      </div>
+    </div>
+    <button class="btn btn-primary">Save Changes</button>
+  </form>
+</div> -->
+
+<div class="container-fluid">
+  <h2 class="section-intro__style mb-4">{{ isEditMode ? 'Edit Product' : 'Add New Product' }}</h2>
+
+  <form *ngIf="product" (ngSubmit)="save()" #productForm="ngForm">
+    <div class="row">
+      <!-- Product Image Upload -->
+      <div class="col-md-12 mb-4">
+        <label class="form-label">Product Photo</label>
+        <div class="d-flex align-items-center">
+          <div class="me-3">
+            <img [src]="product.imageUrl || 'https://via.placeholder.com/100'" 
+                 alt="Product Image" 
+                 class="img-thumbnail" 
+                 style="width: 100px; height: 100px; object-fit: cover;">
+          </div>
+          <div>
+            <input type="file" 
+                   class="form-control" 
+                   accept="image/*" 
+                   (change)="onImageSelected($event)"
+                   #fileInput>
+            <small class="text-muted">Upload product image (JPG, PNG, GIF)</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Details -->
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <label class="form-label">Name <span class="text-danger">*</span></label>
+          <input class="form-control" 
+                 [(ngModel)]="product.name" 
+                 name="name"
+                 (ngModelChange)="trackChange('name', $event)"
+                 required>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <label class="form-label">Brand</label>
+          <input class="form-control" 
+                 [(ngModel)]="product.brand" 
+                 name="brand"
+                 (ngModelChange)="trackChange('brand', $event)">
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="form-group mb-3">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" 
+                    rows="3"
+                    [(ngModel)]="product.description" 
+                    name="desc"
+                    (ngModelChange)="trackChange('description', $event)"></textarea>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group mb-3">
+          <label class="form-label">Price <span class="text-danger">*</span></label>
+          <input type="number" 
+                 class="form-control" 
+                 [(ngModel)]="product.price" 
+                 name="price"
+                 (ngModelChange)="trackChange('price', $event)"
+                 min="0"
+                 step="0.01"
+                 required>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group mb-3">
+          <label class="form-label">Quantity <span class="text-danger">*</span></label>
+          <input type="number" 
+                 class="form-control" 
+                 [(ngModel)]="product.quantity" 
+                 name="qty"
+                 (ngModelChange)="trackChange('quantity', $event)"
+                 min="0"
+                 required>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group mb-3">
+          <label class="form-label">Size</label>
+          <input class="form-control" 
+                 [(ngModel)]="product.size" 
+                 name="size"
+                 (ngModelChange)="trackChange('size', $event)">
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <label class="form-label">Gender</label>
+          <select class="form-control" 
+                  [(ngModel)]="product.gender" 
+                  name="gender"
+                  (ngModelChange)="trackChange('gender', $event)">
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="unisex">Unisex</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Change Tracking Display -->
+    <div *ngIf="hasChanges() && isEditMode" class="alert alert-info">
+      <h6><i class="fa fa-info-circle"></i> Changes Made:</h6>
+      <ul class="mb-0">
+        <li *ngFor="let change of getChanges()">
+          <strong>{{ change.field }}:</strong> 
+          <span class="text-muted">{{ change.oldValue || 'Empty' }}</span> → 
+          <span class="text-success">{{ change.newValue || 'Empty' }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" 
+              class="btn btn-secondary" 
+              (click)="goBack()">
+        <i class="fa fa-arrow-left"></i> Back to Products
+      </button>
+      
+      <div>
+        <button type="button" 
+                class="btn btn-outline-secondary me-2" 
+                (click)="resetForm()"
+                *ngIf="isEditMode">
+          <i class="fa fa-undo"></i> Reset Changes
+        </button>
+        
+        <button type="submit" 
+                class="btn btn-primary"
+                [disabled]="!productForm.valid">
+          <i class="fa fa-save"></i> {{ isEditMode ? 'Save Changes' : 'Create Product' }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
