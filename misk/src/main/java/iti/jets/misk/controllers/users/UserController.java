@@ -59,8 +59,9 @@ public class UserController {
         {
             throw new UserAlreadyExistException("you have an already account");
         }
-        User user = userService.saveUser(dto);
 
+        User user = userService.saveUser(dto);
+        
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
 

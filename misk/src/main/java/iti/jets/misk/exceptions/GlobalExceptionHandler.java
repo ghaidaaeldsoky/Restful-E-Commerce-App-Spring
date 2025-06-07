@@ -40,6 +40,8 @@ public class GlobalExceptionHandler {
 
     // For handling Not Found Address Exception
     @ExceptionHandler(AddressNotFoundException.class)
+
+
     public ResponseEntity<String> handleAddressNotFound(AddressNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
@@ -56,6 +58,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserRegisterationException.class)
     public ResponseEntity<String> handleException(UserRegisterationException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+
+    }
+
+    @ExceptionHandler(UserAlreadyExistException.class)
+    public ResponseEntity<String> handleException(UserAlreadyExistException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
 
     }
 
