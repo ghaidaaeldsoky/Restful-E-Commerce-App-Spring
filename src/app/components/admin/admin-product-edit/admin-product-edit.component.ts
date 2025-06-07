@@ -174,28 +174,3 @@ goBack(): void {
     }));
   }
 }
-
-
-// save(): void {
-//     if (!this.product) return;
-
-//     let products = JSON.parse(localStorage.getItem('products') || '[]');
-    
-//     // if (this.isEditMode) {
-//       // Update existing product
-//       const index = products.findIndex((p: Product) => p.id === this.productId);
-//       if (index !== -1) {
-//         products[index] = { ...this.product };
-        
-//         const changesCount = Object.keys(this.changedFields).length;
-//         const changeMessage = changesCount > 0 
-//           ? ` (${changesCount} field${changesCount > 1 ? 's' : ''} updated)`
-//           : '';
-        
-//         localStorage.setItem('products', JSON.stringify(products));
-//         alert(`Product "${this.product.name}" has been updated successfully in save${changeMessage}!`);
-//       }
-//     // }
-
-//     this.router.navigate(['/products']);
-//   }
