@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,8 +18,9 @@ public class GlobalExceptionHandler {
 
     // For handling Not Found Product Exception
     @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<String> handleProductNotFound(ProductNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    public ResponseEntity<ApiResponse> handleProductNotFound(ProductNotFoundException ex) {
+        ApiResponse apiResponse= ApiResponse.error(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
@@ -49,15 +51,16 @@ public class GlobalExceptionHandler {
 
     // For handling order confirmation Exception
     @ExceptionHandler(OrderConfirmationException.class)
-    public ResponseEntity<String> handleOrderConfirmationException(OrderConfirmationException ex) {
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.getMessage());
+    public ResponseEntity<ApiResponse> handleOrderConfirmationException(OrderConfirmationException ex) {
+        ApiResponse apiResponse= ApiResponse.error(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(apiResponse);
     }
 
 
 
     @ExceptionHandler(UserRegisterationException.class)
     public ResponseEntity<String> handleException(UserRegisterationException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 
     }
 
@@ -67,6 +70,28 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(InsufficientRecordsException.class)
+    public ResponseEntity<ApiResponse> handleInsufficientRecordsExceptionException(InsufficientRecordsException ex) {
+        ApiResponse apiResponse= ApiResponse.error(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+
+    }
+
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiResponse<String>> handleAccessDenied(AccessDeniedException ex) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.error("You are not authorized to access this resource"));
+    }
+
+
+    @ExceptionHandler(GeneralErrorException.class)
+    public ResponseEntity<ApiResponse<String>> handleGeneralErrorException(GeneralErrorException ex) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ApiResponse.error(ex.getMessage()));
+    }
 
 
 

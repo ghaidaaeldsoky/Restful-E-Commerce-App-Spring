@@ -2,27 +2,23 @@ package iti.jets.misk.services;
 
 import iti.jets.misk.dtos.OrderDto;
 import iti.jets.misk.entities.*;
-import iti.jets.misk.exceptions.AddressNotFoundException;
-import iti.jets.misk.exceptions.OrderConfirmationException;
-import iti.jets.misk.exceptions.UserNotFoundException;
+import iti.jets.misk.exceptions.*;
 import iti.jets.misk.mappers.OrderMapper;
 import iti.jets.misk.repositories.*;
-import iti.jets.misk.utils.AuthenticationUtil;
 import iti.jets.misk.utils.ValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.security.GeneralSecurityException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -49,6 +45,7 @@ public class OrderService {
     @Transactional
    public ValidationResult validateOrder( int userId,int addressId) {
       try {
+
           User user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found during order validation"));
           Useraddress address = addressRepo.findById(addressId).orElseThrow(() -> new AddressNotFoundException("Address not found during order validation"));
 
@@ -103,7 +100,7 @@ public class OrderService {
             return new ValidationResult(false, e.getMessage());
         }
         catch (Exception e) {
-            return new ValidationResult(false, "An error occurred during order validation: " + e.getMessage());
+            return new ValidationResult(false, "An error occurred during order validation: " );
         }
     }
 
@@ -146,7 +143,7 @@ public class OrderService {
                 BigDecimal newLimit = oldLimit.subtract(data.getTotal());
                 User user = data.getUser();
                 user.setCreditLimit(newLimit);
-                if(user.getCreditLimit().compareTo(newLimit)!=0){
+                if(user.getCreditLimit().compareTo(newLimit)==0){
                     throw new OrderConfirmationException("User credit limit could not be updated while  confirmation");
                 }
 
@@ -178,11 +175,11 @@ public class OrderService {
     @Transactional
     public String placeOrder(int addressId) {
 
-       // int userId = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName());
-        int userId = 1;
+        int userId = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName());
 
         ValidationResult result = validateOrder(userId, addressId);
         if (!result.isValid()) {
+
             return result.getMessage();
         }
 
@@ -194,9 +191,19 @@ public class OrderService {
 
     @Cacheable(value = "orders", key = "#pageNumber + '-' + #pageSize")
     @Transactional
-    public List<OrderDto> getAllOrders(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return  orderMapper.toDtoList(orderRepo.findAll(pageable).getContent());
+    public Page<OrderDto> getAllOrders(int pageNumber, int pageSize) {
+        try {
+
+            Pageable pageable = PageRequest.of(pageNumber, pageSize);
+            var result = orderRepo.findAll(pageable);
+
+            List<OrderDto> dtoList = orderMapper.toDtoList(result.getContent());
+            return new PageImpl<OrderDto>(dtoList, pageable, result.getTotalElements());
+        }
+        catch (Exception e) {
+            throw new GeneralErrorException("An error occurred while fetching orders: " );
+        }
+
     }
 
     public Order getCertainOrder(int OrderId) {

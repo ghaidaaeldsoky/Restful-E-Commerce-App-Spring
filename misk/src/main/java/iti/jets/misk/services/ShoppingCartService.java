@@ -39,13 +39,16 @@ public class ShoppingCartService {
                 .orElseThrow(() -> new CartException("Product not found"));
 
         if (product.getQuantity() < quantity) {
-            throw new CartException("Insufficient stock. Available: " + product.getQuantity());
+            throw new CartException("Insufficient stock. Available quantity is : " + product.getQuantity());
         }
 
         ShoppingcartId cartId = new ShoppingcartId(productId, userId);
         Shoppingcart existingItem = cartRepository.findById(cartId).orElse(null);
 
         if (existingItem != null) {
+            if(existingItem.getQuantity() == product.getQuantity()) {
+                throw new CartException("You already have the maximum quantity of this product in your cart.");
+            }
             int newQuantity = Math.min(existingItem.getQuantity() + quantity, product.getQuantity());
             existingItem.setQuantity(newQuantity);
             existingItem.setAddedAt(LocalDateTime.now());

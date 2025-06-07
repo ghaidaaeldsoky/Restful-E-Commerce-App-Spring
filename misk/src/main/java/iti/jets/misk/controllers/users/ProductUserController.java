@@ -3,6 +3,7 @@ package iti.jets.misk.controllers.users;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import iti.jets.misk.dtos.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
@@ -38,10 +39,12 @@ public class ProductUserController {
 
     // Get : Products with filterization
     @GetMapping
-    public Page<ProductDto> getProducts(ProductFilterDto filterDto, HttpServletRequest req) {
+    public ResponseEntity<ApiResponse> getProducts(ProductFilterDto filterDto, HttpServletRequest req) {
         Page<ProductDto> productPage = productService.getProductsWithFilter(filterDto);
         String baseUrl = ProductImageHelper.getBaseUrl(req);
-        return ProductImageHelper.addPhotoUrlToPage(productPage,baseUrl);
+        Page<ProductDto> productDtos = ProductImageHelper.addPhotoUrlToPage(productPage, baseUrl);
+        ApiResponse apiResponse= ApiResponse.success(productDtos);
+        return ResponseEntity.ok(apiResponse);
     }
 
 
