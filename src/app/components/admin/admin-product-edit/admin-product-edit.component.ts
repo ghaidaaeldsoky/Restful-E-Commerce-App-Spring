@@ -37,18 +37,9 @@ export class AdminProductEditComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-
-    if (id === 'new') {
-      this.initializeNewProduct();
-    } else {
-      this.productId = Number(id);
-      this.isEditMode = true;
-      this.loadProduct();
-    }
+    this.productId = Number(this.route.snapshot.paramMap.get('id'));
 
     // Simulate fetch from DB or service
-    const all = JSON.parse(localStorage.getItem('products') || '[]');
     this.product = {
       name: `Perfume A`,
       description: 'Luxury perfume',
@@ -60,6 +51,8 @@ export class AdminProductEditComponent implements OnInit {
       imageUrl: 'https://via.placeholder.com/60',
     }
   }
+
+
 
   initializeNewProduct(): void {
     this.product = {
@@ -74,31 +67,7 @@ export class AdminProductEditComponent implements OnInit {
     };
   }
 
-  loadProduct(): void {
-    const products = JSON.parse(localStorage.getItem('products') || '[]');
-    const foundProduct = products.find((p: Product) => p.id === this.productId);
-    
-    if (foundProduct) {
-      this.product = { ...foundProduct };
-      this.originalProduct = { ...foundProduct };
-    } else {
-      // Fallback - create a sample product if not found
-      this.product = {
-        id: this.productId,
-        name: `Perfume ${this.productId}`,
-        description: 'Luxury perfume with long-lasting fragrance',
-        price: 150,
-        quantity: 10,
-        brand: 'MISK',
-        gender: 'unisex',
-        size: '100ml',
-        imageUrl: 'https://via.placeholder.com/100',
-      };
-      this.originalProduct = { ...this.product };
-    }
-  }
-
-   onImageSelected(event: Event): void {
+  onImageSelected(event: Event): void {
     const target = event.target as HTMLInputElement;
     const file = target.files?.[0];
     
@@ -133,6 +102,44 @@ export class AdminProductEditComponent implements OnInit {
     }
 
   }
+
+  saveProduct(): void {
+    if (!this.product) return;
+
+    // TODO: Replace with actual service call
+    console.log('Product to update:', this.product);
+    
+    // Simulate API call
+    setTimeout(() => {
+      alert(`Product "${this.product!.name}" has been updated successfully!`);
+      this.router.navigate(['/products']);
+    }, 500);
+  }
+
+  loadProduct(): void {
+    const products = JSON.parse(localStorage.getItem('products') || '[]');
+    const foundProduct = products.find((p: Product) => p.id === this.productId);
+    
+    if (foundProduct) {
+      this.product = { ...foundProduct };
+      this.originalProduct = { ...foundProduct };
+    } else {
+      // Fallback - create a sample product if not found
+      this.product = {
+        id: this.productId,
+        name: `Perfume ${this.productId}`,
+        description: 'Luxury perfume with long-lasting fragrance',
+        price: 150,
+        quantity: 10,
+        brand: 'MISK',
+        gender: 'unisex',
+        size: '100ml',
+        imageUrl: 'https://via.placeholder.com/100',
+      };
+      this.originalProduct = { ...this.product };
+    }
+  }
+
 
    trackChange(field: string, newValue: any, oldValue?: any): void {
     if (!this.isEditMode || !this.originalProduct) return;

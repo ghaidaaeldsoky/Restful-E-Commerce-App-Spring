@@ -117,7 +117,7 @@ confirmDelete(product: Product): void {
 }
 
 addNewProduct(): void {
-    this.router.navigate(['/products', 'new', 'edit']);
+    this.router.navigate(['/products/add']);
   }
 
 // Method to handle success messages from other components
