@@ -143,7 +143,7 @@ public class OrderService {
                 BigDecimal newLimit = oldLimit.subtract(data.getTotal());
                 User user = data.getUser();
                 user.setCreditLimit(newLimit);
-                if(user.getCreditLimit().compareTo(newLimit)==0){
+                if(user.getCreditLimit().compareTo(newLimit)!=0){
                     throw new OrderConfirmationException("User credit limit could not be updated while  confirmation");
                 }
 
