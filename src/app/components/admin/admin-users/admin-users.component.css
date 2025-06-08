@@ -17,8 +17,10 @@
 
 .pagination .page-link:hover {
   background-color: #384aeb;
-  color: white;
+  color: white !important;
   transition: 0.3s;
+  border-radius: 20px;
+
 }
 
 /* search box */

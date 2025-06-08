@@ -136,6 +136,7 @@
       <table class="table custom-table">
         <thead>
           <tr>
+            <th>No.</th>
             <th>Username</th>
             <th>Mobile</th>
             <th>Email</th>
@@ -144,7 +145,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let user of paginatedUsers">
+          <tr *ngFor="let user of paginatedUsers;  let i = index">
+            <td>{{ (currentPage) * itemsPerPage + i + 1 }}</td>
             <td>{{ user.username }}</td>
             <td>{{ user.mobile }}</td>
             <td>{{ user.email }}</td>

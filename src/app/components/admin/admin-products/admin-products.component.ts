@@ -33,6 +33,11 @@ export class AdminProductsComponent implements OnInit{
   totalPages = 0;
 
   successMessage: string | null = null;
+  noResultsFound = false;
+  errorMessage: string = '';
+  loading = false;
+
+
 
   constructor(private router: Router, private productsService:ProductsService) {}
 
@@ -58,11 +63,25 @@ export class AdminProductsComponent implements OnInit{
   }
 
   loadProducts(): void {
+    this.loading = true;
     this.productsService.getProducts(this.currentPage, this.itemsPerPage, this.searchTerm)
-      .subscribe(response => {
+      .subscribe({
+        next: (response) => {
         this.products = response.content;
         this.totalPages = response.totalPages;
-      });
+        this.noResultsFound = this.products.length === 0;
+        this.errorMessage = '';  // Reset error if successful
+        this.loading = false;
+      },
+    error: (err) => {
+      console.error(err);
+      this.errorMessage = 'Something went wrong while fetching products. Please try again.';
+      this.loading = false;
+      // setTimeout(() => (this.successMessage = null), 2000);
+
+    }
+  
+  });
   }
 
   goToPage(page: number): void {
@@ -106,69 +125,5 @@ export class AdminProductsComponent implements OnInit{
     this.router.navigate(['/products/add']);
   }
 
-  // updatePagination() {
-  //   const start = (this.currentPage - 1) * this.itemsPerPage;
-  //   const end = start + this.itemsPerPage;
-  //   this.paginatedProducts = this.filteredProducts.slice(start, end);
-  // }
-
-  // get totalPagesArray() {
-  //   return Array(this.totalPages).fill(0).map((_, i) => i + 1);
-  // }
-
-  // goToPage(page: number) {
-  //   if (page < 1 || page > this.totalPages) return;
-  //   this.currentPage = page;
-  //   this.updatePagination();
-  // }
-
-  // filterProducts() {
-  //   const term = this.searchTerm.toLowerCase();
-  //   this.filteredProducts = this.products.filter(p =>
-  //     p.name.toLowerCase().includes(term) || p.brand.toLowerCase().includes(term)
-  //   );
-  //   this.currentPage = 1;
-  //   this.updatePagination();
-  // }
-
-  
-
-//   // Modal:
-//   openEditModal(product: Product): void {
-//   this.selectedProduct = { ...product };
-//   ($('#editModal') as any).modal('show');
-// }
-
-// saveProduct(): void {
-//   if (!this.selectedProduct) return;
-
-//   const index = this.products.findIndex(p => p.name === this.selectedProduct?.name);
-//   if (index !== -1) {
-//     this.products[index] = { ...this.selectedProduct };
-//     this.filterProducts();
-//     ($('#editModal') as any).modal('hide');
-//   }
-// }
-
-// confirmDelete(product: Product): void {
-//   const confirmDelete = window.confirm(`Are you sure you want to delete ${product.name}?`);
-//   if (confirmDelete) {
-//     this.products = this.products.filter(p => p !== product);
-//     this.filterProducts();
-//     this.successMessage = 'Deleted successfully.';
-
-//     setTimeout(() => {
-//       this.successMessage = null;
-//     }, 2000);
-//   }
-// }
-
-
-
-// Method to handle success messages from other components
-  // handleProductSaved(message: string): void {
-  //   this.loadProducts(); // Reload products
-  //   this.showSuccessMessage(message);
-  // }
 
 }
