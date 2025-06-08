@@ -8,6 +8,11 @@ import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ConfirmOrderComponent } from './components/confirm-order/confirm-order.component';
+import { AdminUsersComponent } from './components/admin/admin-users/admin-users.component';
+import { AdminProductsComponent } from './components/admin/admin-products/admin-products.component';
+import { AdminOrdersComponent } from './components/admin/admin-orders/admin-orders.component';
+import { AdminProductEditComponent } from './components/admin/admin-product-edit/admin-product-edit.component';
+import { AdminProductAddComponent } from './components/admin/admin-product-add/admin-product-add.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -19,8 +24,14 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'confirm-order', component: ConfirmOrderComponent },
-  { path: '**', redirectTo: '/home' }
+  { path: '**', redirectTo: '/home' },
+  { path: 'admin/users', component: AdminUsersComponent },
+  { path: 'admin/products', component: AdminProductsComponent },
+  { path: 'admin/orders', component: AdminOrdersComponent },
+  { path: 'admin/products/:id/edit', component: AdminProductEditComponent },
+  { path: 'admin/products/add', component: AdminProductAddComponent }
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

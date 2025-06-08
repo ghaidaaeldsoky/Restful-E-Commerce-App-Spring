@@ -16,6 +16,13 @@ import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ConfirmOrderComponent } from './components/confirm-order/confirm-order.component';
+import { AdminLayoutComponent } from './components/admin/admin-layout/admin-layout.component';
+import { AdminOrdersComponent } from './components/admin/admin-orders/admin-orders.component';
+import { AdminUsersComponent } from './components/admin/admin-users/admin-users.component';
+import { AdminProductsComponent } from './components/admin/admin-products/admin-products.component';
+import { AdminProductEditComponent } from './components/admin/admin-product-edit/admin-product-edit.component';
+import { AdminProductAddComponent } from './components/admin/admin-product-add/admin-product-add.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -31,13 +38,22 @@ import { ConfirmOrderComponent } from './components/confirm-order/confirm-order.
     RegisterComponent,
     ProfileComponent,
     CheckoutComponent,
-    ConfirmOrderComponent
+    ConfirmOrderComponent,
+
+    // Admin
+    AdminLayoutComponent,
+    AdminOrdersComponent,
+    AdminUsersComponent,
+    AdminProductsComponent,
+    AdminProductEditComponent,
+    AdminProductAddComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    NgxSliderModule
+    NgxSliderModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
