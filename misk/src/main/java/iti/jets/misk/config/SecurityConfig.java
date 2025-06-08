@@ -66,9 +66,10 @@ public class SecurityConfig {
                                         "/swagger-ui/**",         // Allow Swagger UI assets
                                         "/v3/api-docs/**",        // Allow OpenAPI JSON/YAML
                                         "/swagger-resources/**",  // Older Swagger support
-                                        "/webjars/**"             // Static Swagger JS/CSS
-
-                                )
+                                        "/webjars/**",             // Static Swagger JS/CSS
+                                        "/images/**",               // Allow image endpoints
+                                       "/public/products/**"    // Allow  public product-related endpoints
+                                     )
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
