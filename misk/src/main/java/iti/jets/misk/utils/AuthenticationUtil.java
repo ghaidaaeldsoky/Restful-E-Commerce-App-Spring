@@ -12,12 +12,16 @@ public class AuthenticationUtil {
             throw new IllegalStateException("User is not authenticated");
         }
 
-        Object principal = auth.getPrincipal();
-        if (principal instanceof CustomUserDetails) {
-            CustomUserDetails userDetails = (CustomUserDetails) principal;
-            return userDetails.getUserId();
-        } else {
-            throw new IllegalStateException("Principal is not an instance of CustomUserDetails");
-        }
+        String id = auth.getName();
+
+        return Integer.parseInt(id);
+
+
+
+      
     }
+    
+  
+
+ 
 }

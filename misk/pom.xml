@@ -175,6 +175,7 @@
 
 	<build>
 		<plugins>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -190,6 +191,9 @@
 							<version>${org.mapstruct.version}</version>
 						</path>
 					</annotationProcessorPaths>
+					<compilerArgs>
+          <arg>-Amapstruct.verbose=true</arg>
+        </compilerArgs>
 				</configuration>
 			</plugin>
 			<plugin>

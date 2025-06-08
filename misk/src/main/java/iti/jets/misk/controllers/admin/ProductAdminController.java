@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -42,12 +43,13 @@ public class ProductAdminController {
     // Admin
 
     // Post : new Product
+      @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/no")
     public ResponseEntity<Product> createProduct(@RequestBody ProductCreateUpdateDto dto) {
         Product createdProduct = productService.createNewProduct(dto);
         return ResponseEntity.ok(createdProduct);
     }
-
+  @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProductDto> createProductWithImage(
             @RequestPart("product") String productJson,
@@ -72,6 +74,7 @@ public class ProductAdminController {
     // }
 
     // Get : All Products by filter
+      @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public Page<ProductDto> getProductsAdmin(ProductFilterDto filterDto, HttpServletRequest req) {
         Page<ProductDto> productPage = productService.getProductsWithFilterِAdmin(filterDto);
@@ -80,6 +83,7 @@ public class ProductAdminController {
     }
 
     // Patch : Update Product
+      @PreAuthorize("hasAuthority('ADMIN')")
     @PatchMapping("/no/{id}")
     public ResponseEntity<ProductDto> updateProduct(@PathVariable Integer id,
             @RequestBody ProductCreateUpdateDto productUpdateDto) {
@@ -87,6 +91,7 @@ public class ProductAdminController {
         return ResponseEntity.ok(dto);
     }
 
+      @PreAuthorize("hasAuthority('ADMIN')")
     @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProductDto> updateProductWithImage(
             @PathVariable Integer id,
@@ -107,6 +112,7 @@ public class ProductAdminController {
     }
 
     // Delete : Soft Delete
+      @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable Integer id) {
         productService.deleteProduct(id);
