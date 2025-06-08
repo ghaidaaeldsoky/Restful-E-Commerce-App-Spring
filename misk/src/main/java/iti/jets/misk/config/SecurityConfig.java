@@ -28,13 +28,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableMethodSecurity
 @Configuration
 public class SecurityConfig {
-
     @Value("classpath:public.key")
-private RSAPublicKey publicKey;
-@Value("classpath:private.key")
-private RSAPrivateKey privateKey;
+    private RSAPublicKey publicKey;
+    @Value("classpath:private.key")
+    private RSAPrivateKey privateKey;
 
- @Bean
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -109,10 +108,5 @@ private RSAPrivateKey privateKey;
         source.registerCorsConfiguration("/**", config);
         return source;
     }
-
-
-
-
-
 
 }

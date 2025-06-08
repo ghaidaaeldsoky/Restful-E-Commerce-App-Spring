@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,6 +32,8 @@ import iti.jets.misk.services.ProductService;
 import iti.jets.misk.utils.ProductImageHelper;
 import jakarta.servlet.http.HttpServletRequest;
 
+
+@Tag(name = "Admin Products Endpoints")
 @RestController
 @RequestMapping("/admin/products")
 public class ProductAdminController {
@@ -45,7 +48,7 @@ public class ProductAdminController {
 
     // Post : new Product
     @Operation(summary = "Create a new product without an image")
-      @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/no")
     public ResponseEntity<Product> createProduct(@RequestBody ProductCreateUpdateDto dto) {
         Product createdProduct = productService.createNewProduct(dto);
@@ -54,7 +57,7 @@ public class ProductAdminController {
 
 
     @Operation(summary = "Create a new product with an optional image")
-  @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProductDto> createProductWithImage(
             @RequestPart("product") String productJson,
@@ -80,7 +83,7 @@ public class ProductAdminController {
 
     // Get : All Products by filter
     @Operation(summary = "Get all products after applying filtration and pagination")
-      @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public Page<ProductDto> getProductsAdmin(ProductFilterDto filterDto, HttpServletRequest req) {
         Page<ProductDto> productPage = productService.getProductsWithFilterِAdmin(filterDto);
@@ -89,17 +92,17 @@ public class ProductAdminController {
     }
 
     // Patch : Update Product
-      @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Update product by ID without updating image")
     @PatchMapping("/no/{id}")
     public ResponseEntity<ProductDto> updateProduct(@PathVariable Integer id,
-            @RequestBody ProductCreateUpdateDto productUpdateDto) {
+                                                    @RequestBody ProductCreateUpdateDto productUpdateDto) {
         ProductDto dto = productService.updateProduct(id, productUpdateDto);
         return ResponseEntity.ok(dto);
     }
 
     @Operation(summary = "Update product by ID with updating image")
-      @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProductDto> updateProductWithImage(
             @PathVariable Integer id,
@@ -121,7 +124,7 @@ public class ProductAdminController {
 
     // Delete : Soft Delete
     @Operation(summary = "Delete product by ID")
-      @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable Integer id) {
         productService.deleteProduct(id);

@@ -2,7 +2,6 @@ package iti.jets.misk.controllers.users;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import iti.jets.misk.dtos.LoginRequest;
 import iti.jets.misk.dtos.ApiResponse;
 import iti.jets.misk.dtos.JWTResponse;
 import iti.jets.misk.dtos.LoginRequestDto;
@@ -32,11 +31,11 @@ import org.springframework.web.ErrorResponseException;
 
 import java.util.List;
 
+
 @Tag(name = "User")
 @RestController
 @RequestMapping("/users")
 public class UserController {
-
     @Autowired
     private UserService userService;
 
@@ -44,11 +43,11 @@ public class UserController {
     private JWTProvider JwtProvider;
 
     @Operation(summary = "Get all users")
-      @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public ResponseEntity<ApiResponse<UserResponseDto>>getAllUsers()
     {
-
+   
         List<UserDTO> userDTOs =userService.findAll();
 
         UserResponseDto userResponseDto = new UserResponseDto(userDTOs);
@@ -58,43 +57,45 @@ public class UserController {
 
 
     }
-
-    @Operation(summary = "Get user by ID")
-    @GetMapping("id/{id}")
-    public User getUser(@PathVariable int id) {
-        return userService.findById(id);
+ 
+@Operation(summary = "Get user info")
  @GetMapping("/profile")
-         @PreAuthorize("hasAuthority('USER')")
+@PreAuthorize("hasAuthority('USER')")
 public ResponseEntity<ApiResponse<UserInfoDtoAndUserAddress>> getUser() {
 
          int id = Integer.parseInt( SecurityContextHolder.getContext().getAuthentication().getName()) ;
 
-
+    
     UserInfoDtoAndUserAddress user= userService.findById(id);
 
     return ResponseEntity.ok(ApiResponse.success(user));
     }
 
+    
 
-    @Operation(summary = "Get user by email")
+    @Operation(summary = "Get user by Email")
     @GetMapping("email/{email}")
-    public User getUserByEmail(@PathVariable String email) {
-        return userService.findByEmail(email);
+    public ResponseEntity<ApiResponse<User>> getUserByEmail(@PathVariable String email) {
+        User user= userService.findByEmail(email);
+
+         return ResponseEntity.ok(ApiResponse.success(user));
     }
 
 
-    @Operation(summary = " Update user by ID")
-    @PatchMapping()
-        public ResponseEntity<ApiResponse<String>> updateUser( @RequestBody User newUser) {
-            try {
 
-                int id = Integer.parseInt( SecurityContextHolder.getContext().getAuthentication().getName()) ;
-                userService.updateUser(id, newUser);
-                return ResponseEntity.ok(ApiResponse.success("user updated Succefully", null));
-            } catch (RuntimeException e) {
-                return ResponseEntity.ok(ApiResponse.error("cannot update user"));
-            }
+
+    @Operation(summary = "Update user")
+    @PatchMapping()
+    public ResponseEntity<ApiResponse<String>> updateUser( @RequestBody User newUser) {
+        try {
+            
+         int id = Integer.parseInt( SecurityContextHolder.getContext().getAuthentication().getName()) ;
+            userService.updateUser(id, newUser);
+            return ResponseEntity.ok(ApiResponse.success("user updated Succefully", null));
+        } catch (RuntimeException e) {
+            return ResponseEntity.ok(ApiResponse.error("cannot update user"));
         }
+    }
 
     @Operation(summary = "add new user by providing user info")
     @PostMapping("/register")
@@ -113,8 +114,10 @@ public ResponseEntity<ApiResponse<UserInfoDtoAndUserAddress>> getUser() {
 
 
 
+
     }
 
+    @Operation(summary = "chnage password")
     @PostMapping("/chnagePassword")
      @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<ApiResponse<User>> chnagePassword(@RequestBody PasswordRequest passwordRequest )
@@ -132,37 +135,40 @@ public ResponseEntity<ApiResponse<UserInfoDtoAndUserAddress>> getUser() {
             return ResponseEntity.ok(ApiResponse.error("cannot update user"));
         }
     }
-
-
+ 
+    
     // login
     @Operation(summary = "login user by providing email and password")
     @PostMapping("/login")
-        public ResponseEntity<ApiResponse<JWTResponse>> createJWTToken(@RequestBody LoginRequestDto loginRequest )
+    public ResponseEntity<ApiResponse<JWTResponse>> createJWTToken(@RequestBody LoginRequestDto loginRequest )
+    {
+         
+        if(!userService.checkEmailAvilibity(loginRequest.email()))
         {
-
-            if(!userService.checkEmailAvilibity(loginRequest.email()))
-            {
-                throw new UserNotFoundException("this is user is not found");
-            }
-
-            if(!userService.validateUser(loginRequest))
-            {
-                throw new UserNotFoundException("the email or password may be wrong");
-            }
-
-            String token = JwtProvider.JWTManager(loginRequest.email());
-
-            String role = userService.getUserRole(loginRequest.email());
-
-            JWTResponse jwtResponse= new JWTResponse(token, "Bearer",role);
-
-
-
-
-
-            return ResponseEntity.ok().body(ApiResponse.success(jwtResponse));
-
-
+            throw new UserNotFoundException("this is user is not found");
         }
-}
+
+         if(!userService.validateUser(loginRequest))
+        {
+            throw new UserNotFoundException("the email or password may be wrong");
+        }
+
+        String token = JwtProvider.JWTManager(loginRequest.email());
+
+        String role = userService.getUserRole(loginRequest.email());
+
+        JWTResponse jwtResponse= new JWTResponse(token, "Bearer",role);
+
+
+
+
+
+        return ResponseEntity.ok().body(ApiResponse.success(jwtResponse));
+
+
+    }
+
+    
+
+   
 }

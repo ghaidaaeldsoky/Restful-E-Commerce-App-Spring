@@ -3,6 +3,7 @@ package iti.jets.misk;
 import iti.jets.misk.dtos.OrderDto;
 import iti.jets.misk.entities.Order;
 //import iti.jets.misk.services.EmailService;
+import iti.jets.misk.repositories.OrderRepo;
 import iti.jets.misk.services.OrderService;
 import iti.jets.misk.utils.ValidationResult;
 import org.springframework.boot.SpringApplication;
@@ -22,7 +23,7 @@ public class MiskApplication {
 	public static void main(String[] args) {
 
 		ConfigurableApplicationContext run = SpringApplication.run(MiskApplication.class, args);
-//		OrderService bean = run.getBean(OrderService.class);
+	//	System.out.println(run.getBean(OrderRepo.class).getClass());
 //		//ValidationResult validationResult = bean.validateOrder(1, 1);
 //		//System.out.println(validationResult.isValid());
 //		//System.out.println(validationResult.getMessage());

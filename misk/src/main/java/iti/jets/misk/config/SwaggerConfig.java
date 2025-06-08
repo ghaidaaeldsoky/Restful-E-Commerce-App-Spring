@@ -26,11 +26,6 @@ public class SwaggerConfig {
         return GroupedOpenApi.builder()
                 .group("api")
                 .pathsToMatch("/**")
-//                .addOpenApiCustomizer(openApi -> {
-//                    // Remove problematic schemas
-//                    openApi.getComponents().getSchemas().remove("Sort");
-//                    openApi.getComponents().getSchemas().remove("Pageable");
-//                })
                 .build();
     }
 

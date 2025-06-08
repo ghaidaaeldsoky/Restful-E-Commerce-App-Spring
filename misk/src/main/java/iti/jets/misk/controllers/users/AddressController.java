@@ -2,6 +2,8 @@ package iti.jets.misk.controllers.users;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +21,8 @@ import iti.jets.misk.entities.Useraddress;
 import iti.jets.misk.services.AddressService;
 import jakarta.websocket.server.PathParam;
 
+
+@Tag(name = "Address")
 @RestController
 @RequestMapping("/addresses")
 public class AddressController {
@@ -26,8 +30,8 @@ public class AddressController {
     @Autowired
     AddressService addressService;
     
-
-    @DeleteMapping
+    @Operation(summary = "delete user address")
+     @DeleteMapping
      @PreAuthorize("hasAuthority('USER')")
     String deleteUserAddress()
     {
@@ -38,6 +42,7 @@ public class AddressController {
 
         return "address is deleted";
     }
+      @Operation(summary = "get user list of addresses")
       @PreAuthorize("hasAuthority('USER')")
       @PostMapping
     public ResponseEntity<ApiResponse<String>>addListOfAddresses(@RequestBody List<Useraddress> addresses)
