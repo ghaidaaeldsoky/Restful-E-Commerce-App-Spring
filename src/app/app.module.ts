@@ -10,6 +10,11 @@ import { BeforeFooterComponent } from './components/before-footer/before-footer.
 import { ProductComponent } from './components/product/product.component';
 import { TrendingProductsComponent } from './components/trending-products/trending-products.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { ConfirmOrderComponent } from './components/confirm-order/confirm-order.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +25,12 @@ import { ProductDetailsComponent } from './components/product-details/product-de
     BeforeFooterComponent,
     ProductComponent,
     TrendingProductsComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    LoginComponent,
+    RegisterComponent,
+    ProfileComponent,
+    CheckoutComponent,
+    ConfirmOrderComponent
   ],
   imports: [
     BrowserModule,

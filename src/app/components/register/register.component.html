@@ -1,0 +1,150 @@
+<!-- ================ start banner area ================= -->
+<section class="blog-banner-area" id="category">
+    <div class="container h-100">
+		<div class="blog-banner">
+			<div class="text-center">
+				<h1>Register</h1>
+				<nav aria-label="breadcrumb" class="banner-breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="#">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Register</li>
+					</ol>
+				</nav>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- ================ end banner area ================= -->
+
+<!--================Login Box Area =================-->
+<section class="login_box_area section-margin">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="login_box_img">
+					<div class="hover">
+						<h4>Already have an account?</h4>
+						<p>There are advances being made in science and technology everyday, and a good example of
+							this is the</p>
+						<a class="button button-account" href="login.jsp">Login Now</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="login_form_inner register_form_inner">
+					<h3>Create an account</h3>
+					<form class="row login_form" action="registerController" id="register_form" method="post">
+						<div class="col-md-12 form-group">
+							<input type="text" class="form-control" id="name" name="name" placeholder="Username"
+								onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+						</div>
+						<div class="col-md-12 form-group">
+							<input type="date" class="form-control" id="birthday" name="birthday"
+								placeholder="birthday" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'birthday'">
+						</div>
+						<div class="col-md-12 form-group">
+							<input type="text" class="form-control" id="email" name="email"
+								placeholder="Email Address" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'Email Address'">
+						</div>
+						<div class="col-md-12 form-group">
+							<input type="text" class="form-control" id="job" name="job" placeholder="job"
+								onfocus="this.placeholder = ''" onblur="this.placeholder = 'job'">
+						</div>
+						<div class="col-md-12 form-group">
+							<input type="number" class="form-control" id="creditCardLimit" name="creditCardLimit"
+								placeholder="creditCardLimit" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'creditCard Limit'"
+								min="1000" max="50000" step="500">
+						</div>
+
+						<div class="col-md-12 form-group">
+							<input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
+								placeholder="phoneNumber" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'phoneNumber'">
+						</div>
+
+						<!-- State Dropdown -->
+<div class="col-md-12 form-group">
+    <select class="form-control" id="address-state" name="state" onfocus="this.placeholder = ''" onblur="this.placeholder = 'State'">
+        <option value="" disabled selected>Select State</option>
+        <option value="Alexandria">Alexandria</option>
+        <option value="Aswan">Aswan</option>
+        <option value="Asyut">Asyut</option>
+        <option value="Beheira">Beheira</option>
+        <option value="Beni Suef">Beni Suef</option>
+        <option value="Cairo">Cairo</option>
+        <option value="Dakahlia">Dakahlia</option>
+        <option value="Damietta">Damietta</option>
+        <option value="Fayoum">Fayoum</option>
+        <option value="Gharbia">Gharbia</option>
+        <option value="Giza">Giza</option>
+        <option value="Ismailia">Ismailia</option>
+        <option value="Kafr El-Sheikh">Kafr El-Sheikh</option>
+        <option value="Luxor">Luxor</option>
+        <option value="Matrouh">Matrouh</option>
+        <option value="Minya">Minya</option>
+        <option value="Monufia">Monufia</option>
+        <option value="New Valley">New Valley</option>
+        <option value="North Sinai">North Sinai</option>
+        <option value="Port Said">Port Said</option>
+        <option value="Qalyubia">Qalyubia</option>
+        <option value="Qena">Qena</option>
+        <option value="Red Sea">Red Sea</option>
+        <option value="Sharqia">Sharqia</option>
+        <option value="Sohag">Sohag</option>
+        <option value="South Sinai">South Sinai</option>
+        <option value="Suez">Suez</option>
+    </select>
+</div>
+
+<!-- City Input -->
+<div class="col-md-12 form-group">
+    <input type="text" class="form-control" id="address-city" name="city" placeholder="City" onfocus="this.placeholder = ''" onblur="this.placeholder = 'City'">
+</div>
+
+<!-- Street Input -->
+<div class="col-md-12 form-group">
+    <input type="text" class="form-control" id="address-street" name="street" placeholder="Street" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Street'">
+</div>
+
+<!-- Department Number Input -->
+<div class="col-md-12 form-group">
+    <input type="number" class="form-control" id="address-department" name="department" placeholder="Department Number" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Department Number'">
+</div>
+
+
+							<div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="interests" name="interests"
+									placeholder="interests" onfocus="this.placeholder = ''"
+									onblur="this.placeholder = 'interests'">
+							</div>
+							<div class="col-md-12 form-group">
+								<input type="password" class="form-control" id="password" name="password"
+									placeholder="password" onfocus="this.placeholder = ''"
+									onblur="this.placeholder = 'Password'">
+							</div>
+							<div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="confirmPassword" name="confirmPassword"
+									placeholder="Confirm Password" onfocus="this.placeholder = ''"
+									onblur="this.placeholder = 'Confirm Password'">
+							</div>
+							<div class="col-md-12 form-group">
+								<div class="creat_account">
+									<input type="checkbox" id="f-option2" name="selector">
+									<label for="f-option2">Keep me logged in</label>
+								</div>
+							</div>
+							<div class="col-md-12 form-group">
+								<button type="submit" value="submit"
+								id="button-register"
+									class="button button-register w-100">Register</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--================End Login Box Area =================-->
