@@ -23,6 +23,7 @@ import { AdminProductsComponent } from './components/admin/admin-products/admin-
 import { AdminProductEditComponent } from './components/admin/admin-product-edit/admin-product-edit.component';
 import { AdminProductAddComponent } from './components/admin/admin-product-add/admin-product-add.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { HttpClientModule } from '@angular/common/http';
     AdminUsersComponent,
     AdminProductsComponent,
     AdminProductEditComponent,
-    AdminProductAddComponent
+    AdminProductAddComponent,
+    MainLayoutComponent
   ],
   imports: [
     BrowserModule,

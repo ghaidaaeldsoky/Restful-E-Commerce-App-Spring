@@ -146,7 +146,7 @@ goBack(): void {
       if (!confirmLeave) return;
     }
     
-    this.router.navigate(['/products']);
+    this.router.navigate(['admin/products']);
   }
 
   resetForm(): void {
