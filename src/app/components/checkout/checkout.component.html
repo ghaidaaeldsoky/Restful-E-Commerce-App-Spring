@@ -1,0 +1,108 @@
+<!-- checkout.component.html -->
+<section class="checkout_area section-margin--small">
+  <div class="order-address" 
+       style="font-size: 16px; margin: 100px; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
+    <h3 style="font-size: 30px; margin-bottom: 15px">Select Shipping Address</h3>
+
+    <div *ngFor="let address of addresses">
+      <label style="display: block; margin-bottom: 8px; font-size: 18px">
+        <input type="radio" name="shipping-address" [value]="address.addressId" 
+               [checked]="selectedAddressId === address.addressId"
+               (change)="setAddress(address.addressId)"/>
+        {{address.name}} - {{address.recipient}} - {{address.street}} - {{address.city}}
+      </label>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="order-box" style="font-size: 20px">
+      <h2 class="order-title" style="font-size: 30px">Your Order</h2>
+      <table class="order-table" style="width: 100%; border-collapse: collapse; font-size: 22px">
+        <thead>
+          <tr style="border-bottom: 2px solid #000">
+            <th style="text-align: left; padding: 10px">Product</th>
+            <th style="text-align: center; padding: 10px">Quantity</th>
+            <th style="text-align: right; padding: 10px">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cartItems" 
+              style="border-bottom: 1px solid #ddd" class="t-pro">
+            <td style="padding: 10px">{{item.name}}</td>
+            <td style="text-align: center; padding: 10px">x {{item.quantity}}</td>
+            <td style="text-align: right; padding: 10px" class="item-price">
+              {{item.price * item.quantity | currency:'EGP':'symbol'}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ul class="order-summary" style="font-size: 22px; margin-top: 20px">
+        <li class="order-subtotal" style="display: flex; justify-content: space-between">
+          <span>Subtotal</span>
+          <span class="subtotal-price">{{subtotal | currency:'EGP':'symbol'}}</span>
+        </li>
+        <li class="order-shipping" style="display: flex; justify-content: space-between">
+          <span>Shipping</span>
+          <span class="shipping-price">shipping fees: {{shippingFee | currency:'EGP':'symbol'}}</span>
+        </li>
+        <li class="order-total" 
+            style="display: flex; justify-content: space-between; font-weight: bold; font-size: 24px">
+          <span>Total</span>
+          <span class="overall-price">{{total | currency:'EGP':'symbol'}}</span>
+        </li>
+      </ul>
+
+      <div class="order-terms" style="font-size: 20px; margin-top: 20px">
+        <input type="checkbox" id="accept-terms" name="terms" [(ngModel)]="acceptTerms" />
+        <label for="accept-terms">&nbsp;I've read and accept the </label>
+        <a href="#" (click)="openTermsModal(); $event.preventDefault()">&nbsp;terms & conditions*</a>
+      </div>
+
+      <div class="order-confirm" style="text-align: center; margin-top: 20px">
+        <input type="hidden" name="addID" [value]="selectedAddressId" />
+        
+        <button type="button" class="button button-confirm" 
+                style="font-size: 22px; padding: 10px 20px" (click)="submitOrder()">
+          Confirm Order
+        </button>
+        <button type="button" class="button button-confirm" 
+                style="font-size: 22px; padding: 10px 20px" (click)="discardOrder()">
+          Discard Order
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Toast Notification -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+  <div id="loginToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive"
+    aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        You must log in to add items to the cart.
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+        aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Terms Modal -->
+<div class="modal fade" [class.show]="showTermsModal" [style.display]="showTermsModal ? 'block' : 'none'" 
+     tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+        <button type="button" class="btn-close" (click)="closeTermsModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeTermsModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

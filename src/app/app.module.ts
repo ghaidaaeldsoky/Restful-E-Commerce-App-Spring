@@ -11,6 +11,11 @@ import { ProductComponent } from './components/product/product.component';
 import { TrendingProductsComponent } from './components/trending-products/trending-products.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { ConfirmOrderComponent } from './components/confirm-order/confirm-order.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +26,12 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     BeforeFooterComponent,
     ProductComponent,
     TrendingProductsComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    LoginComponent,
+    RegisterComponent,
+    ProfileComponent,
+    CheckoutComponent,
+    ConfirmOrderComponent
   ],
   imports: [
     BrowserModule,
