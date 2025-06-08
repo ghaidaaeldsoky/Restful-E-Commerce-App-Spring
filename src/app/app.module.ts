@@ -10,6 +10,7 @@ import { BeforeFooterComponent } from './components/before-footer/before-footer.
 import { ProductComponent } from './components/product/product.component';
 import { TrendingProductsComponent } from './components/trending-products/trending-products.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ProductDetailsComponent } from './components/product-details/product-de
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    NgxSliderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

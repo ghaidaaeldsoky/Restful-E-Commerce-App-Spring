@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
@@ -15,6 +15,12 @@ declare var $: any;
 export class ProductDetailsComponent implements OnInit {
   product: Product | null = null;
   quantity = 1;
+  toastSuccess: boolean = false;
+  toastMessage: string = '';
+  showLoginToast: boolean = false;
+  @ViewChild('toastElement') toastElement!: ElementRef;
+  @ViewChild('loginToastElement') loginToastElement!: ElementRef;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -57,7 +63,8 @@ export class ProductDetailsComponent implements OnInit {
 
   addToCart(): void {
     if (!this.authService.isLoggedIn()) {
-      alert('Please log in to add items to cart!');
+      this.showLoginToast = true;
+      this.showToast(false, 'You must log in to add items to the cart.');
       return;
     }
 
@@ -66,7 +73,7 @@ export class ProductDetailsComponent implements OnInit {
     }
 
     if (this.product.quantity === 0) {
-      alert('This product is out of stock!');
+      this.showToast(false, 'This product is out of stock!');
       return;
     }
 
@@ -74,7 +81,7 @@ export class ProductDetailsComponent implements OnInit {
     const totalQuantityAfterAdd = currentCartQuantity + this.quantity;
 
     if (totalQuantityAfterAdd > this.product.quantity) {
-      alert(`Cannot add ${this.quantity} items. Only ${this.product.quantity - currentCartQuantity} more available.`);
+      this.showToast(false, `Cannot add ${this.quantity} items. Only ${this.product.quantity - currentCartQuantity} more available.`);
       return;
     }
 
@@ -82,12 +89,28 @@ export class ProductDetailsComponent implements OnInit {
     this.cartService.addItem(this.product.id, this.quantity);
     
     if (currentCartQuantity > 0) {
-      alert(`${this.product.name} quantity updated in cart! Total: ${totalQuantityAfterAdd}`);
+      this.showToast(true, `${this.product.name} quantity updated in cart! Total: ${totalQuantityAfterAdd}`);
     } else {
-      alert(`${this.product.name} added to cart! Quantity: ${this.quantity}`);
+      this.showToast(true, `${this.product.name} added to cart! Quantity: ${this.quantity}`);
     }
     
     // reset
     this.quantity = 1;
   }
+
+showToast(success: boolean, message: string): void {
+  this.toastSuccess = success;
+  this.toastMessage = message;
+
+  setTimeout(() => {
+    if (this.showLoginToast && this.loginToastElement?.nativeElement) {
+      const loginToast = new (window as any).bootstrap.Toast(this.loginToastElement.nativeElement);
+      loginToast.show();
+      this.showLoginToast = false;
+    } else if (this.toastElement?.nativeElement) {
+      const toast = new (window as any).bootstrap.Toast(this.toastElement.nativeElement);
+      toast.show();
+    }
+  }, 100); //to ensure DOM is ready
+}
 }

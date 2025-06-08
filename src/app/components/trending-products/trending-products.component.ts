@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
@@ -12,6 +12,11 @@ import { AuthService } from '../../services/auth.service';
 })
 export class TrendingProductsComponent implements OnInit {
   trendingProducts: Product[] = [];
+  toastSuccess: boolean = false;
+  toastMessage: string = '';
+  showLoginToast: boolean = false;
+  @ViewChild('toastElement') toastElement!: ElementRef;
+  @ViewChild('loginToastElement') loginToastElement!: ElementRef;
 
   constructor(
     private productService: ProductService,
@@ -23,32 +28,49 @@ export class TrendingProductsComponent implements OnInit {
     this.trendingProducts = this.productService.getTrendingProducts();
   }
 
-  addToCart(product: Product): void {
+  addToCart(event: Event, perfume: Product): void {
+    event.preventDefault();
+    event.stopPropagation();
+    
     if (!this.authService.isLoggedIn()) {
-      alert('Please log in to add items to cart!');
+      this.showLoginToast = true;
+      this.showToast(false, 'You must log in to add items to the cart.');
       return;
     }
 
-    if (product.quantity === 0) {
-      alert('This product is out of stock!');
+    if (perfume.quantity === 0) {
+      this.showToast(false, 'This product is out of stock!');
       return;
     }
 
-    const currentCartQuantity = this.cartService.getItemQuantity(product.id);
-    
-    if (currentCartQuantity >= product.quantity) {
-      alert(`${product.name} is already at maximum quantity in your cart!`);
+    const currentCartQuantity = this.cartService.getItemQuantity(perfume.id);
+    if (currentCartQuantity >= perfume.quantity) {
+      this.showToast(false, `${perfume.name} is already at maximum quantity in your cart!`);
       return;
     }
 
-    // Add one item to cart
-    this.cartService.addItem(product.id, 1);
-    
+    this.cartService.addItem(perfume.id, 1);
     const newQuantity = currentCartQuantity + 1;
     if (currentCartQuantity > 0) {
-      alert(`${product.name} quantity updated in cart! Total: ${newQuantity}`);
+      this.showToast(true, `${perfume.name} quantity updated in cart! Total: ${newQuantity}`);
     } else {
-      alert(`${product.name} added to cart!`);
+      this.showToast(true, `${perfume.name} added to cart!`);
     }
   }
+
+  showToast(success: boolean, message: string): void {
+  this.toastSuccess = success;
+  this.toastMessage = message;
+
+  setTimeout(() => {
+    if (this.showLoginToast && this.loginToastElement?.nativeElement) {
+      const loginToast = new (window as any).bootstrap.Toast(this.loginToastElement.nativeElement);
+      loginToast.show();
+      this.showLoginToast = false;
+    } else if (this.toastElement?.nativeElement) {
+      const toast = new (window as any).bootstrap.Toast(this.toastElement.nativeElement);
+      toast.show();
+    }
+  }, 100); //to ensure DOM is ready
+}
 }
