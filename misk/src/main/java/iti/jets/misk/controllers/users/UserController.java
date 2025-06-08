@@ -1,5 +1,7 @@
 package iti.jets.misk.controllers.users;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import iti.jets.misk.dtos.LoginRequest;
 import iti.jets.misk.dtos.UserDTO;
 import iti.jets.misk.dtos.UserInfoDto;
@@ -19,6 +21,7 @@ import org.springframework.web.ErrorResponseException;
 
 import java.util.List;
 
+@Tag(name = "User")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -29,21 +32,27 @@ public class UserController {
     @Autowired 
     private JWTProvider JwtProvider;
 
+    @Operation(summary = "Get all users")
     @GetMapping
     public List<UserDTO> getUsers() {
         return userService.findAll();
     }
 
+    @Operation(summary = "Get user by ID")
     @GetMapping("id/{id}")
     public User getUser(@PathVariable int id) {
         return userService.findById(id);
     }
 
+
+    @Operation(summary = "Get user by email")
     @GetMapping("email/{email}")
     public User getUserByEmail(@PathVariable String email) {
         return userService.findByEmail(email);
     }
 
+
+    @Operation(summary = " Update user by ID")
     @PatchMapping("/{id}")
     public ResponseEntity<String> updateUser(@PathVariable int id, @RequestBody User newUser) {
         try {
@@ -53,6 +62,8 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @Operation(summary = "add new user by providing user info")
     @PostMapping("/register")
     public ResponseEntity<User>addNewUser(@RequestBody UserInfoDto dto)
     {
@@ -71,6 +82,7 @@ public class UserController {
 
     }
     // login
+    @Operation(summary = "login user by providing email and password")
     @PostMapping("/login")
     public ResponseEntity<String> createJWTToken(@RequestBody LoginRequest loginRequest )
     {

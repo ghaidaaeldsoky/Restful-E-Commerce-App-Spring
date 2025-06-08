@@ -1,5 +1,7 @@
 package iti.jets.misk.controllers.users;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import iti.jets.misk.dtos.*;
 import iti.jets.misk.entities.User;
 import iti.jets.misk.exceptions.UserAlreadyExistException;
@@ -18,7 +20,7 @@ import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Tag(name = "Orders")
 @RestController
 public class OrderController {
 
@@ -32,6 +34,7 @@ public class OrderController {
     private OrderService orderService;
 
      //admin/orders?page=1&size=10
+     @Operation(summary = "Fetch orders with pagination")
      @PreAuthorize("hasAuthority('USER')")
     @GetMapping("admin/orders")
     public ResponseEntity<ApiResponse<Page<OrderDto>>> getOrders(@RequestParam int page, @RequestParam  int size) {
@@ -39,6 +42,7 @@ public class OrderController {
     }
 
     //orders?addressId=1
+    @Operation(summary = "Confirm order with address ID")
     @PostMapping("/orders")
     public ResponseEntity<ApiResponse<String>> confirmOrder(@RequestParam int addressId) {
         String message = orderService.placeOrder(addressId);

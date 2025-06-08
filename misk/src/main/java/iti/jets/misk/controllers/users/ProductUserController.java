@@ -3,6 +3,8 @@ package iti.jets.misk.controllers.users;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import iti.jets.misk.dtos.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +26,7 @@ import iti.jets.misk.services.ProductService;
 import iti.jets.misk.utils.ProductImageHelper;
 import jakarta.servlet.http.HttpServletRequest;
 
+@Tag(name = "products public Endpoints")
 @RestController
 @RequestMapping("/public/products")
 public class ProductUserController {
@@ -38,6 +41,7 @@ public class ProductUserController {
     // Users
 
     // Get : Products with filterization
+    @Operation(summary = "get products after applying filters and pagination")
     @GetMapping
     public ResponseEntity<ApiResponse> getProducts(ProductFilterDto filterDto, HttpServletRequest req) {
         Page<ProductDto> productPage = productService.getProductsWithFilter(filterDto);
@@ -49,6 +53,7 @@ public class ProductUserController {
 
 
     // Get : Product Details
+    @Operation(summary = "get product by id to get its details")
     @GetMapping("/{id}")
     public ResponseEntity<ProductDto> getProductById(@PathVariable Integer id, HttpServletRequest req) {
         ProductDto dto = productService.getProductDtoById(id);

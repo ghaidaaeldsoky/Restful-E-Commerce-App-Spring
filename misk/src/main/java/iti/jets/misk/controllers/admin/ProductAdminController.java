@@ -2,6 +2,8 @@ package iti.jets.misk.controllers.admin;
 
 import java.io.IOException;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,6 +31,8 @@ import iti.jets.misk.services.ProductService;
 import iti.jets.misk.utils.ProductImageHelper;
 import jakarta.servlet.http.HttpServletRequest;
 
+
+@Tag(name = "products admin Endpoints")
 @RestController
 @RequestMapping("/admin/products")
 public class ProductAdminController {
@@ -42,12 +46,15 @@ public class ProductAdminController {
     // Admin
 
     // Post : new Product
+    @Operation(summary = "Create a new product without an image")
     @PostMapping("/no")
     public ResponseEntity<Product> createProduct(@RequestBody ProductCreateUpdateDto dto) {
         Product createdProduct = productService.createNewProduct(dto);
         return ResponseEntity.ok(createdProduct);
     }
 
+
+    @Operation(summary = "Create a new product with an optional image")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProductDto> createProductWithImage(
             @RequestPart("product") String productJson,
@@ -72,6 +79,7 @@ public class ProductAdminController {
     // }
 
     // Get : All Products by filter
+    @Operation(summary = "Get all products after applying filtration and pagination")
     @GetMapping
     public Page<ProductDto> getProductsAdmin(ProductFilterDto filterDto, HttpServletRequest req) {
         Page<ProductDto> productPage = productService.getProductsWithFilterِAdmin(filterDto);
@@ -80,6 +88,7 @@ public class ProductAdminController {
     }
 
     // Patch : Update Product
+    @Operation(summary = "Update product by ID without updating image")
     @PatchMapping("/no/{id}")
     public ResponseEntity<ProductDto> updateProduct(@PathVariable Integer id,
             @RequestBody ProductCreateUpdateDto productUpdateDto) {
@@ -87,6 +96,7 @@ public class ProductAdminController {
         return ResponseEntity.ok(dto);
     }
 
+    @Operation(summary = "Update product by ID with updating image")
     @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProductDto> updateProductWithImage(
             @PathVariable Integer id,
@@ -107,6 +117,7 @@ public class ProductAdminController {
     }
 
     // Delete : Soft Delete
+    @Operation(summary = "Delete product by ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable Integer id) {
         productService.deleteProduct(id);

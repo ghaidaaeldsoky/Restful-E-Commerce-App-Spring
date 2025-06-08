@@ -61,7 +61,15 @@ private RSAPrivateKey privateKey;
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/users/login", "/users/register")
+                        auth -> auth.requestMatchers(
+                                "/users/login", "/users/register",
+                                        "/swagger-ui.html",
+                                        "/swagger-ui/**",         // Allow Swagger UI assets
+                                        "/v3/api-docs/**",        // Allow OpenAPI JSON/YAML
+                                        "/swagger-resources/**",  // Older Swagger support
+                                        "/webjars/**"             // Static Swagger JS/CSS
+
+                                )
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
@@ -91,7 +99,7 @@ private RSAPrivateKey privateKey;
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://localhost:3000")); // your frontend origin
+        config.setAllowedOrigins(List.of("http://localhost:3000"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
