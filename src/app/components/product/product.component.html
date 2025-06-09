@@ -28,44 +28,24 @@
             <li class="common-filter">
               <ul>
                 <li class="filter-list">
-                  <input class="pixel-radio" 
-                         type="radio" 
-                         id="all" 
-                         name="gender" 
-                         value="all" 
-                         [checked]="selectedGender === 'all'"
-                         (change)="onGenderChange('all')">
+                  <input class="pixel-radio" type="radio" id="all" name="gender" value="all"
+                    [checked]="selectedGender === 'all'" (change)="onGenderChange('all')">
                   <label for="all" [class.active]="selectedGender === 'all'">All</label>
                 </li>
                 <li class="filter-list">
-                  <input class="pixel-radio" 
-                         type="radio" 
-                         id="men" 
-                         name="gender" 
-                         value="MALE" 
-                         [checked]="selectedGender === 'MALE'"
-                         (change)="onGenderChange('MALE')">
-                  <label for="men" [class.active]="selectedGender === 'MALE'">Men</label>
+                  <input class="pixel-radio" type="radio" id="men" name="gender" value="Male"
+                    [checked]="selectedGender === 'Male'" (change)="onGenderChange('Male')">
+                  <label for="men" [class.active]="selectedGender === 'Male'">Men</label>
                 </li>
                 <li class="filter-list">
-                  <input class="pixel-radio" 
-                         type="radio" 
-                         id="women" 
-                         name="gender" 
-                         value="FEMALE" 
-                         [checked]="selectedGender === 'FEMALE'"
-                         (change)="onGenderChange('FEMALE')">
-                  <label for="women" [class.active]="selectedGender === 'FEMALE'">Women</label>
+                  <input class="pixel-radio" type="radio" id="women" name="gender" value="Female"
+                    [checked]="selectedGender === 'Female'" (change)="onGenderChange('Female')">
+                  <label for="women" [class.active]="selectedGender === 'Female'">Women</label>
                 </li>
                 <li class="filter-list">
-                  <input class="pixel-radio" 
-                         type="radio" 
-                         id="unisex" 
-                         name="gender" 
-                         value="UNISEX" 
-                         [checked]="selectedGender === 'UNISEX'"
-                         (change)="onGenderChange('UNISEX')">
-                  <label for="unisex" [class.active]="selectedGender === 'UNISEX'">Unisex</label>
+                  <input class="pixel-radio" type="radio" id="unisex" name="gender" value="Unisex"
+                    [checked]="selectedGender === 'Unisex'" (change)="onGenderChange('Unisex')">
+                  <label for="unisex" [class.active]="selectedGender === 'Unisex'">Unisex</label>
                 </li>
               </ul>
               <!-- Filter By Price -->
@@ -73,12 +53,8 @@
               <div class="common-filter">
                 <div class="price-range-area">
                   <div class="price-slider-wrapper" style="position: relative; z-index: 1;">
-                    <ngx-slider 
-                      [(value)]="filters.minPrice" 
-                      [(highValue)]="filters.maxPrice" 
-                      [options]="sliderOptions" 
-                      (userChangeEnd)="applyFilters()"
-                      style="pointer-events: auto;">
+                    <ngx-slider [(value)]="filters.minPrice" [(highValue)]="filters.maxPrice" [options]="sliderOptions"
+                      (userChangeEnd)="applyFilters()" style="pointer-events: auto;">
                     </ngx-slider>
                   </div>
                   <div class="value-wrapper d-flex">
@@ -100,7 +76,8 @@
         <div class="filter-bar d-flex flex-wrap align-items-center">
           <div>
             <div class="input-group filter-bar-search" style="min-width: 335px;">
-              <input type="text" placeholder="Search" [(ngModel)]="filters.searchQuery" (ngModelChange)="onSearchChange()" style="width: 88%;">
+              <input type="text" placeholder="Search" [(ngModel)]="filters.name" (ngModelChange)="onSearchChange()"
+                style="width: 88%;">
               <div class="input-group-append">
                 <button type="button" (click)="applyFilters()">
                   <i class="ti-search"></i>
@@ -115,9 +92,11 @@
           <div class="row" *ngIf="products.length > 0; else noResults">
             <div class="col-lg-4 col-md-6 col-sm-6 mb-4" *ngFor="let perfume of products">
               <div class="card text-center card-product h-100">
-                <a [routerLink]="['/product-details']" [queryParams]="{ id: perfume.id, name: perfume.name }" style="text-decoration: none; color: inherit;">
+                <a [routerLink]="['/product-details']" [queryParams]="{ id: perfume.id, name: perfume.name }"
+                  style="text-decoration: none; color: inherit;">
                   <div class="card-product__img position-relative">
-                    <span *ngIf="perfume.quantity === 0" class="badge position-absolute top-0 end-0 m-2" style="font-size: 0.8rem; background-color: #384AEB; border: 1px solid white; color: white; padding: 5px 10px; font-weight: bold;">
+                    <span *ngIf="perfume.quantity === 0" class="badge position-absolute top-0 end-0 m-2"
+                      style="font-size: 0.8rem; background-color: #384AEB; border: 1px solid white; color: white; padding: 5px 10px; font-weight: bold;">
                       SOLD OUT
                     </span>
                     <img class="card-img" [src]="perfume.imageUrl" [alt]="perfume.name">
@@ -150,33 +129,28 @@
               <div class="no-results-container">
                 <i class="bi bi-search fa-3x text-muted mb-4"></i>
                 <h3 class="mb-3">No Results Found</h3>
-                <p class="text-muted">We couldn't find any items matching your search<br>Try adjusting your filters or search terms</p>
+                <p class="text-muted">We couldn't find any items matching your search<br>Try adjusting your filters or
+                  search terms</p>
               </div>
             </div>
           </ng-template>
-          
+
           <!-- Pagination -->
           <div class="row" *ngIf="totalPages > 1">
             <div class="col-12">
               <nav aria-label="Product pagination">
                 <div class="pagination justify-content-center">
-                  <a *ngIf="currentPage > 1" 
-                     [routerLink]="['/products']" 
-                     [queryParams]="getPageParams(currentPage - 1)" 
-                     class="btn btn-sm btn-outline-primary mx-1">
+                  <a *ngIf="currentPage > 1" [routerLink]="['/products']" [queryParams]="getPageParams(currentPage - 1)"
+                    class="btn btn-sm btn-outline-primary mx-1">
                     Previous
                   </a>
-                  <a *ngFor="let page of getPageRange()" 
-                     [routerLink]="['/products']" 
-                     [queryParams]="getPageParams(page)" 
-                     class="btn btn-sm mx-1" 
-                     [ngClass]="{'btn-primary active': page === currentPage, 'btn-outline-primary': page !== currentPage}">
+                  <a *ngFor="let page of getPageRange()" [routerLink]="['/products']"
+                    [queryParams]="getPageParams(page)" class="btn btn-sm mx-1"
+                    [ngClass]="{'btn-primary active': page === currentPage, 'btn-outline-primary': page !== currentPage}">
                     {{ page }}
                   </a>
-                  <a *ngIf="currentPage < totalPages" 
-                     [routerLink]="['/products']" 
-                     [queryParams]="getPageParams(currentPage + 1)" 
-                     class="btn btn-sm btn-outline-primary mx-1">
+                  <a *ngIf="currentPage < totalPages" [routerLink]="['/products']"
+                    [queryParams]="getPageParams(currentPage + 1)" class="btn btn-sm btn-outline-primary mx-1">
                     Next
                   </a>
                 </div>
@@ -194,23 +168,25 @@
 <!-- Toast Notifications -->
 <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
   <!-- Regular Toast -->
-  <div #toastElement id="regularToast" class="toast align-items-center" 
-       [ngClass]="{'text-bg-success': toastSuccess, 'text-bg-danger': !toastSuccess}" 
-       role="alert" aria-live="assertive" aria-atomic="true">
+  <div #toastElement id="regularToast" class="toast align-items-center"
+    [ngClass]="{'text-bg-success': toastSuccess, 'text-bg-danger': !toastSuccess}" role="alert" aria-live="assertive"
+    aria-atomic="true">
     <div class="d-flex">
       <div class="toast-body">{{ toastMessage }}</div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+        aria-label="Close"></button>
     </div>
   </div>
-  
+
   <!-- Login Required Toast -->
-  <div #loginToastElement id="loginToast" class="toast align-items-center text-bg-danger border-0" 
-       role="alert" aria-live="assertive" aria-atomic="true">
+  <div #loginToastElement id="loginToast" class="toast align-items-center text-bg-danger border-0" role="alert"
+    aria-live="assertive" aria-atomic="true">
     <div class="d-flex">
       <div class="toast-body">
         You must log in to add items to the cart.
       </div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+        aria-label="Close"></button>
     </div>
   </div>
 </div>

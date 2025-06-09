@@ -1,0 +1,80 @@
+<!--================Cart Area =================-->
+<section class="cart_area">
+  <div class="container">
+    <div class="cart_inner">
+      <div class="table-responsive">
+        <table class="table" style="min-height: 100px">
+          <thead>
+            <tr>
+              <th scope="col" style="font-size: 20px">Product</th>
+              <th scope="col" style="font-size: 20px">Price</th>
+              <th scope="col" style="font-size: 20px">Quantity</th>
+              <th scope="col" style="font-size: 20px">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="product-row" *ngFor="let item of cartItems">
+              <td>
+                <div class="media">
+                  <div class="d-flex">
+                    <img [src]="item.productPhoto" alt="{{ item.productName }}" />
+                  </div>
+                  <div class="media-body">
+                    <p>{{ item.productName }}</p>
+                    <a href="#" style="font-size: 12px" class="removeitem" (click)="removeItem(item.id)">remove item</a>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <h5 class="price">{{ item.productPrice }} EGP</h5>
+              </td>
+              <td>
+                <div class="product_count">
+                  <input type="hidden" id="hidden" value="{{ item.id }}" />
+                  <input type="text" name="qty" maxlength="12" [(ngModel)]="item.quantity" title="Quantity:"
+                    class="input-text qty" [attr.data-max]="item.storage" readonly />
+                  <button class="increase items-count" type="button" (click)="increaseQuantity(item)">
+                    <i class="lnr lnr-chevron-up"></i>
+                  </button>
+                  <button class="reduced items-count" type="button" (click)="decreaseQuantity(item)">
+                    <i class="lnr lnr-chevron-down"></i>
+                  </button>
+                </div>
+              </td>
+              <td>
+                <h5 class="total-price">{{ item.productPrice * item.quantity }} EGP</h5>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>
+                <h5 style="font-size: 21px">Subtotal</h5>
+              </td>
+              <td>
+                <h5 style="font-size: 20px" #orderPrice>{{ subtotal }} EGP</h5>
+              </td>
+            </tr>
+            <tr class="out_button_area">
+              <td></td>
+              <td></td>
+              <td>
+                <div class="checkout_btn_inner d-flex align-items-center">
+                  <form id="cartForm">
+                    <button type="button" class="primary-btn ml-2" (click)="continueShopping()" style="margin:4px">
+                      Continue Shopping
+                    </button>
+                    <button type="button" class="primary-btn ml-2" (click)="proceedToCheckout()" style="margin:4px">
+                      Proceed to Checkout
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+<!--================End Cart Area =================-->

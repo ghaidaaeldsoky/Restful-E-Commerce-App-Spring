@@ -25,7 +25,17 @@ export class TrendingProductsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.trendingProducts = this.productService.getTrendingProducts();
+    this.productService.getTrendingProducts().subscribe({
+      next: (products: Product[]) => {
+        this.trendingProducts = products;
+        console.log('Loaded trending products:', products);
+      },
+      error: (err) => {
+        console.error('Error loading trending products:', err);
+        this.trendingProducts = [];
+        this.showToast(false, 'Failed to load trending products.');
+      }
+    });
   }
 
   addToCart(event: Event, perfume: Product): void {
@@ -59,18 +69,18 @@ export class TrendingProductsComponent implements OnInit {
   }
 
   showToast(success: boolean, message: string): void {
-  this.toastSuccess = success;
-  this.toastMessage = message;
+    this.toastSuccess = success;
+    this.toastMessage = message;
 
-  setTimeout(() => {
-    if (this.showLoginToast && this.loginToastElement?.nativeElement) {
-      const loginToast = new (window as any).bootstrap.Toast(this.loginToastElement.nativeElement);
-      loginToast.show();
-      this.showLoginToast = false;
-    } else if (this.toastElement?.nativeElement) {
-      const toast = new (window as any).bootstrap.Toast(this.toastElement.nativeElement);
-      toast.show();
-    }
-  }, 100); //to ensure DOM is ready
-}
+    setTimeout(() => {
+      if (this.showLoginToast && this.loginToastElement?.nativeElement) {
+        const loginToast = new (window as any).bootstrap.Toast(this.loginToastElement.nativeElement);
+        loginToast.show();
+        this.showLoginToast = false;
+      } else if (this.toastElement?.nativeElement) {
+        const toast = new (window as any).bootstrap.Toast(this.toastElement.nativeElement);
+        toast.show();
+      }
+    }, 100);
+  }
 }

@@ -19,10 +19,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
   totalPages: number = 1;
   pageSize: number = 6;
   filters = {
-    gender: 'all',
+    name: '',
     minPrice: 0,
     maxPrice: 1000,
-    searchQuery: ''
+    brands: [] as string[]
   };
   sliderOptions: Options = {
     floor: 0,
@@ -57,13 +57,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.initializeSliderOptions();
     
     this.route.queryParams.subscribe(params => {
-      this.filters.gender = params['gender'] || 'all';
+      this.filters.name = params['name'] || '';
       this.filters.minPrice = +params['minPrice'] || 0;
       this.filters.maxPrice = +params['maxPrice'] || this.sliderOptions.ceil || 1000;
-      this.filters.searchQuery = params['search'] || '';
+      this.filters.brands = (params['brands'] || '').split(',').filter(Boolean) as string[] || [];
       this.currentPage = +params['page'] || 1;
-      this.selectedGender = this.filters.gender;
-      console.log('Loaded filters from query params:', this.filters);
+      this.selectedGender = params['gender'] || 'all';
+      console.log('Loaded filters from query params:', { ...this.filters, selectedGender: this.selectedGender });
       this.loadProducts();
     });
 
@@ -80,26 +80,30 @@ export class ProductComponent implements OnInit, AfterViewInit {
   loadProducts(): void {
     console.log('Loading products with filters:', this.filters);
     this.productService.getFilteredProducts({
-      ...this.filters,
-      page: this.currentPage,
-      pageSize: this.pageSize
+      name: this.filters.name,
+      minPrice: this.filters.minPrice,
+      maxPrice: this.filters.maxPrice,
+      brands: this.filters.brands,
+      page: this.currentPage - 1, //for back
+      pageSize: this.pageSize,
+      gender: this.selectedGender !== 'all' ? this.selectedGender : undefined 
     }).subscribe({
       next: (response: ApiResponse) => {
         console.log('API response:', response);
         if (response.success) {
-  this.products = response.data.content.map(p => ({
-    id: p.productId,
-    name: p.name,
-    description: p.description,
-    price: p.price,
-    quantity: p.quantity,
-    brand: p.brand,
-    size: p.size,
-    gender: p.gender.toLowerCase(),
-    imageUrl: p.photo
-  }));
-  this.totalPages = response.data.totalPages || 1;
-  this.currentPage = response.data.number + 1;
+          this.products = response.data.content.map(p => ({
+            id: p.productId,
+            name: p.name,
+            description: p.description,
+            price: p.price,
+            quantity: p.quantity,
+            brand: p.brand,
+            size: p.size,
+            gender: p.gender,
+            imageUrl: p.photo
+          }));
+          this.totalPages = response.data.totalPages || 1;
+          this.currentPage = response.data.number + 1; 
         } else {
           this.products = [];
           this.totalPages = 1;
@@ -110,58 +114,56 @@ export class ProductComponent implements OnInit, AfterViewInit {
         console.error('Error loading products:', err);
         this.products = [];
         this.totalPages = 1;
+        this.showToast(false, 'Error loading products. Please try again.');
         this.cdr.detectChanges();
       }
     });
   }
 
   applyFilters(): void {
-    console.log('applyFilters called with gender:', this.filters.gender);
+    console.log('Applying filters with name:', this.filters.name);
     if (this.filters.minPrice > this.filters.maxPrice) {
       [this.filters.minPrice, this.filters.maxPrice] = [this.filters.maxPrice, this.filters.minPrice];
     }
-    const currentParams = this.route.snapshot.queryParams;
-    const newParams = {
+    const newParams: any = {
       page: this.currentPage,
-      gender: this.filters.gender,
+      name: this.filters.name || null,
       minPrice: this.filters.minPrice,
       maxPrice: this.filters.maxPrice,
-      search: this.filters.searchQuery || null
+      brands: this.filters.brands.length ? this.filters.brands.join(',') : null
     };
-    if (
-      currentParams['gender'] !== newParams.gender ||
-      currentParams['minPrice'] !== newParams.minPrice.toString() ||
-      currentParams['maxPrice'] !== newParams.maxPrice.toString() ||
-      currentParams['search'] !== newParams.search ||
-      currentParams['page'] !== newParams.page.toString()
-    ) {
-      this.currentPage = 1;
-      this.router.navigate(['/products'], {
-        queryParams: newParams,
-        queryParamsHandling: 'merge'
-      });
+
+    //include gender if not all
+    if (this.selectedGender && this.selectedGender !== 'all') {
+      newParams['gender'] = this.selectedGender; 
     }
+    this.router.navigate(['/products'], {
+      queryParams: newParams,
+      queryParamsHandling: 'merge'
+    }).then(() => {
+      this.loadProducts();
+    });
     this.cdr.detectChanges();
   }
 
   resetFilters(): void {
     this.filters = {
-      gender: 'all',
+      name: '',
       minPrice: 0,
       maxPrice: this.sliderOptions.ceil || 1000,
-      searchQuery: ''
+      brands: []
     };
     this.selectedGender = 'all';
     this.applyFilters();
   }
 
   onSearchChange(): void {
-    this.searchSubject.next(this.filters.searchQuery);
+    this.filters.name = this.filters.name || '';
+    this.searchSubject.next(this.filters.name);
   }
 
   onGenderChange(gender: string): void {
     console.log('onGenderChange called with gender:', gender);
-    this.filters.gender = gender;
     this.selectedGender = gender;
     this.cdr.detectChanges();
     this.applyFilters();
@@ -226,23 +228,27 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   getPageParams(page: number): any {
-    return {
+    const params: any = {
       page,
-      gender: this.filters.gender,
+      name: this.filters.name || null,
       minPrice: this.filters.minPrice,
       maxPrice: this.filters.maxPrice,
-      search: this.filters.searchQuery || null
+      brands: this.filters.brands.length ? this.filters.brands.join(',') : null
     };
+    if (this.selectedGender && this.selectedGender !== 'all') {
+      params['gender'] = this.selectedGender;
+    }
+    return params;
   }
 
   private initializeSliderOptions(): void {
-    this.productService.getFilteredProducts({ 
-      gender: 'all', 
-      minPrice: 0, 
-      maxPrice: 50000, // large number to get all products(future work)
-      searchQuery: '', 
-      page: 1, 
-      pageSize: 1000 
+    this.productService.getFilteredProducts({
+      name: '',
+      minPrice: 0,
+      maxPrice: 50000,
+      brands: [],
+      page: 0,
+      pageSize: 50
     }).subscribe({
       next: (response: ApiResponse) => {
         if (response.success && response.data.content.length > 0) {
@@ -264,6 +270,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           // Set initial max price 
           if (this.filters.maxPrice === 1000) {
             this.filters.maxPrice = ceilPrice;
+            this.applyFilters();
           }
           
           console.log('Slider initialized - Max price:', ceilPrice);

@@ -32,20 +32,23 @@ export class ProductDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const productId = +params['id'];
-      const foundProduct = this.productService.getProductById(productId);
-      this.product = foundProduct || null;
-      this.quantity = 1;
-      
-      setTimeout(() => {
-        if (typeof $ !== 'undefined' && $('.s_Product_carousel').length) {
-          $('.s_Product_carousel').owlCarousel({
-            items: 1,
-            loop: true,
-            dots: true,
-            nav: false
-          });
-        }
-      }, 0);
+      if (productId) {
+        this.productService.getProductById(productId).subscribe({
+          next: (product: Product) => {
+            this.product = product;
+            this.quantity = 1;
+            console.log('Loaded product:', product);
+          },
+          error: (err) => {
+            console.error('Error loading product:', err);
+            this.product = null;
+            this.showToast(false, 'Failed to load product. Please try again.');
+          }
+        });
+      } else {
+        this.showToast(false, 'No product ID provided.');
+        this.product = null;
+      }
     });
   }
 
@@ -98,19 +101,19 @@ export class ProductDetailsComponent implements OnInit {
     this.quantity = 1;
   }
 
-showToast(success: boolean, message: string): void {
-  this.toastSuccess = success;
-  this.toastMessage = message;
+  showToast(success: boolean, message: string): void {
+    this.toastSuccess = success;
+    this.toastMessage = message;
 
-  setTimeout(() => {
-    if (this.showLoginToast && this.loginToastElement?.nativeElement) {
-      const loginToast = new (window as any).bootstrap.Toast(this.loginToastElement.nativeElement);
-      loginToast.show();
-      this.showLoginToast = false;
-    } else if (this.toastElement?.nativeElement) {
-      const toast = new (window as any).bootstrap.Toast(this.toastElement.nativeElement);
-      toast.show();
-    }
-  }, 100); //to ensure DOM is ready
-}
+    setTimeout(() => {
+      if (this.showLoginToast && this.loginToastElement?.nativeElement) {
+        const loginToast = new (window as any).bootstrap.Toast(this.loginToastElement.nativeElement);
+        loginToast.show();
+        this.showLoginToast = false;
+      } else if (this.toastElement?.nativeElement) {
+        const toast = new (window as any).bootstrap.Toast(this.toastElement.nativeElement);
+        toast.show();
+      }
+    }, 100);
+  }
 }

@@ -24,6 +24,7 @@ import { AdminProductEditComponent } from './components/admin/admin-product-edit
 import { AdminProductAddComponent } from './components/admin/admin-product-add/admin-product-add.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { CartComponent } from './components/cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
     ProfileComponent,
     CheckoutComponent,
     ConfirmOrderComponent,
-
+    CartComponent,
     // Admin
     AdminLayoutComponent,
     AdminOrdersComponent,

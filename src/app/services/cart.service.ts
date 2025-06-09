@@ -12,14 +12,14 @@ export interface CartItem {
 export class CartService {
   private cartCountSubject = new BehaviorSubject<number>(0);
   public cartCount$ = this.cartCountSubject.asObservable();
+  private cartItems: { id: number; name: string; price: number; quantity: number; imageUrl?: string }[] = [];
 
   constructor() {
     this.updateCartCount();
   }
 
-  getCartItems(): CartItem[] {
-    const items = JSON.parse(localStorage.getItem('cartItems') || '[]');
-    return Array.isArray(items) ? items : [];
+  getCartItems(): { id: number; name: string; price: number; quantity: number; imageUrl?: string }[] {
+    return [...this.cartItems];
   }
 
   getCartCount(): number {
@@ -31,32 +31,31 @@ export class CartService {
     return this.getCartItems().length;
   }
 
-  addItem(productId: number, quantity: number = 1): void {
-    const items = this.getCartItems();
-    const existingItemIndex = items.findIndex(item => item.productId === productId);
-    
-    if (existingItemIndex > -1) {
-      // product exists, increase quantity
-      items[existingItemIndex].quantity += quantity;
+  addItem(productId: number, quantity: number, name?: string, price?: number, imageUrl?: string): void {
+    const existingItem = this.cartItems.find(item => item.id === productId);
+    if (existingItem) {
+      existingItem.quantity += quantity;
     } else {
-      // new product, add to cart
-      items.push({ productId, quantity });
+      this.cartItems.push({ id: productId, name: name || 'Unknown', price: price || 0, quantity, imageUrl });
     }
-    
-    localStorage.setItem('cartItems', JSON.stringify(items));
+    this.saveCart();
     this.updateCartCount();
+  }
+
+  private saveCart(): void {
+    localStorage.setItem('cart', JSON.stringify(this.cartItems));
   }
 
   removeItem(productId: number): void {
     const items = this.getCartItems();
-    const updatedItems = items.filter(item => item.productId !== productId);
+    const updatedItems = items.filter(item => item.id !== productId);
     localStorage.setItem('cartItems', JSON.stringify(updatedItems));
     this.updateCartCount();
   }
 
   updateItemQuantity(productId: number, quantity: number): void {
     const items = this.getCartItems();
-    const itemIndex = items.findIndex(item => item.productId === productId);
+    const itemIndex = items.findIndex(item => item.id === productId);
     
     if (itemIndex > -1) {
       if (quantity <= 0) {
@@ -72,7 +71,7 @@ export class CartService {
 
   getItemQuantity(productId: number): number {
     const items = this.getCartItems();
-    const item = items.find(item => item.productId === productId);
+    const item = items.find(item => item.id === productId);
     return item ? item.quantity : 0;
   }
 
