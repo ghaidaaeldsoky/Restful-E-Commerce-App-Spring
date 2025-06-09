@@ -78,7 +78,7 @@ export class AdminProductAddComponent implements OnInit{
       .subscribe({
         next: (createdProduct) => {
           alert(`Product "${createdProduct.name}" has been created successfully!`);
-          this.router.navigate(['/products']);
+          this.router.navigate(['admin/products']);
         },
         error: (error) => {
           console.error('Error creating product:', error);
@@ -98,7 +98,7 @@ export class AdminProductAddComponent implements OnInit{
       if (!confirmLeave) return;
     }
 
-    this.router.navigate(['/products']);
+    this.router.navigate(['admin/products']);
   }
 
   // onImageSelected(event: Event): void {

@@ -49,7 +49,7 @@ export class ProductsService {
 
   // Get Product detail for this Product
   getProductById(id: number): Observable<ProductDto> {
-    return this.http.get<ProductDto>(`${this.apiUrl}/${id}`);
+    return this.http.get<ProductDto>(`http://localhost:8085/public/products/${id}`);
   }
 
   // Edit product just with specific changes

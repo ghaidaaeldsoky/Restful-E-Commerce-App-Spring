@@ -129,7 +129,7 @@ trackChange(field: string, newValue: any, oldValue?: any): void {
     .subscribe({
       next: (updatedProduct) => {
         alert(`Product "${updatedProduct.name}" updated successfully.`);
-        this.router.navigate(['/products']);
+        this.router.navigate(['admin/products']);
       },
       error: (err) => {
         console.error('Error updating product:', err);

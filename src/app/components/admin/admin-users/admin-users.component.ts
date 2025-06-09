@@ -1,13 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
-interface User {
-  username: string;
-  mobile: string;
-  email: string;
-  creditLimit: number;
-  role: 'admin' | 'user';
-}
-
+import { SystemUsersService, User } from '../../../services/admin/system-users.service';
 
 @Component({
   selector: 'app-admin-users',
@@ -26,19 +18,27 @@ export class AdminUsersComponent implements OnInit{
   itemsPerPage = 10;
   searchTerm = '';
 
-  ngOnInit(): void {
-     // Mock data – replace with real service
-    this.users = Array.from({ length: 32 }).map((_, i) => ({
-      username: `user${i + 1}`,
-      mobile: `0100${i + 1}0000`,
-      email: `user${i + 1}@mail.com`,
-      creditLimit: Math.floor(Math.random() * 10000),
-      role: i % 5 === 0 ? 'admin' : 'user',
-    }));
+  constructor(private userService: SystemUsersService) {}
 
-    this.filteredUsers = [...this.users];
-    this.updatePagination();
+  ngOnInit(): void {
+     this.loadUsers();
   }
+
+  loadUsers(): void {
+    this.userService.getUsers().subscribe({
+      next: (res) => {
+        // const apiUsers = res;
+        console.log(res);
+        this.users = res;
+        this.filteredUsers = [...this.users];
+        this.updatePagination();
+      },
+      error: (err) => {
+        console.error('Error fetching users:', err);
+      }
+    });
+  }
+
 
   get totalPages(): number {
     return Math.ceil(this.filteredUsers.length / this.itemsPerPage);

@@ -118,11 +118,11 @@ export class AdminProductsComponent implements OnInit{
 
 
   editProduct(product: ProductDto) {
-    this.router.navigate(['/products', product.productId, 'edit']);
+    this.router.navigate(['admin/products', product.productId, 'edit']);
   }
 
   addNewProduct(): void {
-    this.router.navigate(['/products/add']);
+    this.router.navigate(['admin/products/add']);
   }
 
 
