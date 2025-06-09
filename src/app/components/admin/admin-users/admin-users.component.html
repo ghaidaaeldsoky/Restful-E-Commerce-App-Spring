@@ -141,27 +141,27 @@
             <th>Mobile</th>
             <th>Email</th>
             <th>Credit Limit</th>
-            <th>Role</th>
+            <!-- <th>Role</th> -->
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let user of paginatedUsers;  let i = index">
-            <td>{{ (currentPage) * itemsPerPage + i + 1 }}</td>
+            <td>{{  i + 1 }}</td>
             <td>{{ user.username }}</td>
             <td>{{ user.mobile }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.creditLimit | currency }}</td>
-            <td>
+            <!-- <td>
               <span class="badge" [ngClass]="user.role === 'admin' ? 'badge-primary' : 'badge-secondary'">
                 {{ user.role }}
               </span>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
     </div>
 
-    <ul class="pagination justify-content-center mt-4">
+    <!-- <ul class="pagination justify-content-center mt-4">
       <li class="page-item" [class.disabled]="currentPage === 1">
         <button class="page-link" (click)="goToPage(currentPage - 1)">«</button>
       </li>
@@ -175,6 +175,6 @@
       <li class="page-item" [class.disabled]="currentPage === totalPages">
         <button class="page-link" (click)="goToPage(currentPage + 1)">»</button>
       </li>
-    </ul>
+    </ul> -->
   </div>
 </div>

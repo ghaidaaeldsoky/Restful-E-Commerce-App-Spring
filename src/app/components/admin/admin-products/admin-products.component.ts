@@ -28,7 +28,7 @@ export class AdminProductsComponent implements OnInit{
   // filteredProducts: Product[] = [];
   // paginatedProducts: Product[] = [];
   currentPage = 0;  ///Backend
-  itemsPerPage = 10;
+  itemsPerPage = 5;
   searchTerm = '';
   totalPages = 0;
 
@@ -63,7 +63,7 @@ export class AdminProductsComponent implements OnInit{
   }
 
   loadProducts(): void {
-    this.loading = true;
+    // this.loading = true;
     this.productsService.getProducts(this.currentPage, this.itemsPerPage, this.searchTerm)
       .subscribe({
         next: (response) => {
@@ -118,11 +118,11 @@ export class AdminProductsComponent implements OnInit{
 
 
   editProduct(product: ProductDto) {
-    this.router.navigate(['/products', product.productId, 'edit']);
+    this.router.navigate(['admin/products', product.productId, 'edit']);
   }
 
   addNewProduct(): void {
-    this.router.navigate(['/products/add']);
+    this.router.navigate(['admin/products/add']);
   }
 
 
