@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
+
 import { AppComponent } from './app.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -10,7 +12,6 @@ import { BeforeFooterComponent } from './components/before-footer/before-footer.
 import { ProductComponent } from './components/product/product.component';
 import { TrendingProductsComponent } from './components/trending-products/trending-products.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
@@ -22,9 +23,11 @@ import { AdminUsersComponent } from './components/admin/admin-users/admin-users.
 import { AdminProductsComponent } from './components/admin/admin-products/admin-products.component';
 import { AdminProductEditComponent } from './components/admin/admin-product-edit/admin-product-edit.component';
 import { AdminProductAddComponent } from './components/admin/admin-product-add/admin-product-add.component';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { CartComponent } from './components/cart/cart.component';
+
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth/auth.interceptor';
 
 @NgModule({
@@ -43,7 +46,7 @@ import { AuthInterceptor } from './interceptors/auth/auth.interceptor';
     CheckoutComponent,
     ConfirmOrderComponent,
     CartComponent,
-    // Admin
+    // Admin components
     AdminLayoutComponent,
     AdminOrdersComponent,
     AdminUsersComponent,
@@ -58,8 +61,11 @@ import { AuthInterceptor } from './interceptors/auth/auth.interceptor';
     FormsModule,
     NgxSliderModule,
     HttpClientModule
+    // No components here!
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
