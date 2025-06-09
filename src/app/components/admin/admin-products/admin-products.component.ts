@@ -28,7 +28,7 @@ export class AdminProductsComponent implements OnInit{
   // filteredProducts: Product[] = [];
   // paginatedProducts: Product[] = [];
   currentPage = 0;  ///Backend
-  itemsPerPage = 10;
+  itemsPerPage = 5;
   searchTerm = '';
   totalPages = 0;
 
