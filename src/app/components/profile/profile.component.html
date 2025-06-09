@@ -42,7 +42,8 @@
                     type="text"
                     class="form-control input-field"
                     id="first-name"
-                    disabled
+                    [(ngModel)]="firstName"
+                    [disabled]="!isEditMode"
                   />
                 </div>
                 <div class="form-group">
@@ -51,7 +52,8 @@
                     type="email"
                     class="form-control input-field"
                     id="email"
-                    disabled
+                    [(ngModel)]="email"
+                    [disabled]="!isEditMode"
                   />
                 </div>
                 <div class="form-group">
@@ -60,13 +62,13 @@
                     type="text"
                     class="form-control input-field"
                     id="phone"
-                    disabled
+                    [(ngModel)]="phone"
+                    [disabled]="!isEditMode"
                   />
                 </div>
-                <button id="edit-account" class="btn btn-primary">Edit</button>
-                <button id="save-account" class="btn btn-success d-none">
-                  Save
-                </button>
+                <p *ngIf="showUpdateMessage" class="text-success mt-2">Updated successfully!</p>
+                <button id="edit-account" class="btn btn-primary" *ngIf="!isEditMode" (click)="enableEdit()">Edit</button>
+                <button id="save-account" class="btn btn-success d-none" *ngIf="isEditMode" (click)="saveChanges()">Save</button>
 
                 <p id="update-message" class="update-message d-none">
                   Updated successfully!
