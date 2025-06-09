@@ -11,6 +11,10 @@
           "prefix": "app",
           "type": "component"
         },
+        "@schematics/angular:interceptor": {
+           "flat": false,
+           "path": "src/app/interceptors"
+        },
         "@schematics/angular:directive": {
           "standalone": false
         },
