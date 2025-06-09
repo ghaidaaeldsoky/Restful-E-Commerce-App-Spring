@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { SystemOrdersService } from '../../../services/admin/system-orders.service';
 
 interface Order {
+  orderId: number,
   username: string;
   totalAmount: number;
   address: string;
@@ -17,31 +19,31 @@ interface Order {
 export class AdminOrdersComponent implements OnInit {
 
   orders: Order[] = [];
-  filteredOrders: Order[] = [];
-  paginatedOrders: Order[] = [];
-  currentPage = 1;
+
+  currentPage = 0;
   itemsPerPage = 5;
   searchTerm = '';
+  totalPages = 1;
 
+  constructor(private orderService: SystemOrdersService) { }
 
   ngOnInit(): void {
-    this.orders = Array.from({ length: 12 }).map((_, i) => ({
-      username: `User ${i + 1}`,
-      totalAmount: 100 + i * 10,
-      address: `Cairo, Street ${i + 1}`,
-      orderDate: new Date().toLocaleDateString(),
-      products: [
-        { name: 'Perfume A', quantity: 2 },
-        { name: 'Perfume B', quantity: 1 },
-      ],
-    }));
-
-    this.filteredOrders = [...this.orders];
-    this.updatePagination();
+    this.loadOrders();
   }
 
-   get totalPages() {
-    return Math.ceil(this.filteredOrders.length / this.itemsPerPage);
+  loadOrders(): void {
+    this.orderService.getOrders(this.currentPage, this.itemsPerPage).subscribe(res => {
+      const content = res.data.content;
+      this.orders = content.map(dto => ({
+        orderId: dto.orderId,
+        username: dto.userName,
+        totalAmount: dto.totalPrice,
+        address: 'N/A',
+        orderDate: new Date().toLocaleDateString(),
+        products: Object.entries(dto.products).map(([name, quantity]) => ({ name, quantity })),
+      }));
+      this.totalPages = res.data.totalPages;
+    });
   }
 
   get totalPagesArray(): number[] {
@@ -51,24 +53,10 @@ export class AdminOrdersComponent implements OnInit {
   }
 
   goToPage(page: number): void {
-    if (page < 1 || page > this.totalPages) return;
+    if (page < 0 || page > this.totalPages) return;
     this.currentPage = page;
-    this.updatePagination();
+    this.loadOrders();
   }
 
-  updatePagination(): void {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    const end = start + this.itemsPerPage;
-    this.paginatedOrders = this.filteredOrders.slice(start, end);
-  }
-
-  filterOrders(): void {
-    const term = this.searchTerm.toLowerCase();
-    this.filteredOrders = this.orders.filter(order =>
-      order.username.toLowerCase().includes(term) || order.address.toLowerCase().includes(term)
-    );
-    this.currentPage = 1;
-    this.updatePagination();
-  }
 
 }

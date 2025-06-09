@@ -63,7 +63,7 @@ export class AdminProductsComponent implements OnInit{
   }
 
   loadProducts(): void {
-    this.loading = true;
+    // this.loading = true;
     this.productsService.getProducts(this.currentPage, this.itemsPerPage, this.searchTerm)
       .subscribe({
         next: (response) => {
