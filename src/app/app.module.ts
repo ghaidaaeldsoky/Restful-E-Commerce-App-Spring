@@ -22,8 +22,9 @@ import { AdminUsersComponent } from './components/admin/admin-users/admin-users.
 import { AdminProductsComponent } from './components/admin/admin-products/admin-products.component';
 import { AdminProductEditComponent } from './components/admin/admin-product-edit/admin-product-edit.component';
 import { AdminProductAddComponent } from './components/admin/admin-product-add/admin-product-add.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { AuthInterceptor } from './interceptors/auth/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,7 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
     NgxSliderModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -17,12 +17,12 @@
             <li class="nav-item"><a class="nav-link" routerLink="/products">Shop</a></li>
 
             <ng-container *ngIf="isLoggedIn; else guestLinks">
-              <li class="nav-item"><a class="nav-link" (click)="logout()">LogOut</a></li>
+              <li class="nav-item"><a class="nav-link" (click)="logout()" >LogOut</a></li>
               <li class="nav-item"><a class="nav-link" routerLink="/profile">Profile</a></li>
             </ng-container>
 
             <ng-template #guestLinks>
-              <li class="nav-item"><a class="nav-link" routerLink="/login">LogIn</a></li>
+              <li class="nav-item"><a class="nav-link" (click)="goToLogin()" *ngIf="!isLoggedIn">LogIn</a></li>
               <li class="nav-item"><a class="nav-link" routerLink="/register">Register</a></li>
             </ng-template>
 
@@ -43,7 +43,7 @@
   </div>
 
   <!-- Temporary Simulation Button for Testing -->
-  <div class="text-center mt-2" *ngIf="!isLoggedIn">
+ <!-- <div class="text-center mt-2" *ngIf="!isLoggedIn">
     <button class="btn btn-outline-primary btn-sm" (click)="simulateLogin()">Simulate Login</button>
-  </div>
+  </div> -->
 </header>
