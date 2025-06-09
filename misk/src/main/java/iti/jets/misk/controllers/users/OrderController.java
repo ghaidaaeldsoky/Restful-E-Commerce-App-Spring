@@ -7,6 +7,7 @@ import iti.jets.misk.entities.User;
 import iti.jets.misk.exceptions.UserAlreadyExistException;
 import iti.jets.misk.exceptions.UserNotFoundException;
 import iti.jets.misk.repositories.UserRepository;
+import iti.jets.misk.services.EmailService;
 import iti.jets.misk.services.JWTProvider;
 import iti.jets.misk.services.OrderService;
 import iti.jets.misk.services.UserService;
@@ -24,11 +25,11 @@ import java.util.List;
 @RestController
 public class OrderController {
 
-//    @Autowired
-//    EmailService emailService;
+    @Autowired
+    EmailService emailService;
 
-//    @Autowired
-//    UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     private OrderService orderService;
@@ -53,11 +54,11 @@ public class OrderController {
             return new ResponseEntity<>(ApiResponse.error(message), HttpStatus.NOT_FOUND);
         }
         int userId = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName());
-//        emailService.sendSimpleEmail(
-//                 userRepository.findById(userId).orElse(null).getEmail(),
-//                "Order Confirmation",
-//                "Your order has been confirmed successfully. Thank you for shopping with us!"
-//        );
+        emailService.sendSimpleEmail(
+                 userRepository.findById(userId).orElse(null).getEmail(),
+                "Order Confirmation",
+                "نفــحاتــك بدأت مـعنـا... شـكــرًا لأنــك اختــرت مــِســك. "
+        );
         return new ResponseEntity<>(ApiResponse.success(message), HttpStatus.CREATED);
     }
 

@@ -1,6 +1,7 @@
 package iti.jets.misk.exceptions;
 
 import iti.jets.misk.dtos.ApiResponse;
+import org.hibernate.annotations.Synchronize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class GlobalExceptionHandler {
     // For handling Not Found Product Exception
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<ApiResponse> handleProductNotFound(ProductNotFoundException ex) {
-        ApiResponse apiResponse= ApiResponse.error(ex.getMessage());
+        ApiResponse apiResponse = ApiResponse.error(ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
     }
 
@@ -52,15 +53,14 @@ public class GlobalExceptionHandler {
     // For handling order confirmation Exception
     @ExceptionHandler(OrderConfirmationException.class)
     public ResponseEntity<ApiResponse> handleOrderConfirmationException(OrderConfirmationException ex) {
-        ApiResponse apiResponse= ApiResponse.error(ex.getMessage());
+        ApiResponse apiResponse = ApiResponse.error(ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(apiResponse);
     }
 
 
-
     @ExceptionHandler(UserRegisterationException.class)
     public ResponseEntity<String> handleException(UserRegisterationException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 
     }
 
@@ -72,7 +72,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InsufficientRecordsException.class)
     public ResponseEntity<ApiResponse> handleInsufficientRecordsExceptionException(InsufficientRecordsException ex) {
-        ApiResponse apiResponse= ApiResponse.error(ex.getMessage());
+        ApiResponse apiResponse = ApiResponse.error(ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
 
     }
@@ -93,7 +93,4 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error(ex.getMessage()));
     }
 
-
-
 }
-

@@ -32,7 +32,7 @@ public class AddressController {
     
     @Operation(summary = "delete user address")
      @DeleteMapping
-     @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     String deleteUserAddress()
     {
 
@@ -42,7 +42,7 @@ public class AddressController {
 
         return "address is deleted";
     }
-      @Operation(summary = "get user list of addresses")
+      @Operation(summary = "Add list of addresses for user")
       @PreAuthorize("hasAuthority('USER')")
       @PostMapping
     public ResponseEntity<ApiResponse<String>>addListOfAddresses(@RequestBody List<Useraddress> addresses)
