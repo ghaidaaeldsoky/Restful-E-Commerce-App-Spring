@@ -35,7 +35,7 @@ public class OrderController {
 
      //admin/orders?page=1&size=10
      @Operation(summary = "Fetch orders with pagination")
-     @PreAuthorize("hasAuthority('USER')")
+     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("admin/orders")
     public ResponseEntity<ApiResponse<Page<OrderDto>>> getOrders(@RequestParam int page, @RequestParam  int size) {
         return ResponseEntity.ok(ApiResponse.success(orderService.getAllOrders(page,size)));

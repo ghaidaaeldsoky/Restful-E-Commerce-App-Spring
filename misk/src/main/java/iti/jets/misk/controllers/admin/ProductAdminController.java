@@ -1,6 +1,8 @@
 package iti.jets.misk.controllers.admin;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,7 +34,6 @@ import iti.jets.misk.entities.Product;
 import iti.jets.misk.services.ProductService;
 import iti.jets.misk.utils.ProductImageHelper;
 import jakarta.servlet.http.HttpServletRequest;
-
 
 @Tag(name = "Admin Products Endpoints")
 @RestController
@@ -126,9 +128,11 @@ public class ProductAdminController {
     @Operation(summary = "Delete product by ID")
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable Integer id) {
+    public ResponseEntity<Map<String, String>> deleteProduct(@PathVariable Integer id) {
         productService.deleteProduct(id);
-        return ResponseEntity.ok("Delete Succefully");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Deleted Successfully");
+        return ResponseEntity.ok(response);
     }
 
 }
