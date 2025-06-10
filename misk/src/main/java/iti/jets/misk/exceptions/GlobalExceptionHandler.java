@@ -58,15 +58,15 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(UserRegisterationException.class)
-    public ResponseEntity<String> handleException(UserRegisterationException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    public ResponseEntity<ApiResponse> handleException(UserRegisterationException ex) {
+        ApiResponse apiResponse= ApiResponse.error(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
 
     }
 
-    @ExceptionHandler(UserAlreadyExistException.class)
-    public ResponseEntity<String> handleException(UserAlreadyExistException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    public ResponseEntity<ApiResponse> handleException(UserAlreadyExistException ex) {
+        ApiResponse apiResponse= ApiResponse.error(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
 
     }
 
