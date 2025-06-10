@@ -21,49 +21,57 @@ import iti.jets.misk.entities.Useraddress;
 import iti.jets.misk.services.AddressService;
 import jakarta.websocket.server.PathParam;
 
-
 @Tag(name = "Address")
 @RestController
 @RequestMapping("/addresses")
 public class AddressController {
 
-    @Autowired
-    AddressService addressService;
-    
-    @Operation(summary = "delete user address")
-     @DeleteMapping
-    @PreAuthorize("hasAuthority('USER')")
-    String deleteUserAddress()
-    {
+  @Autowired
+  AddressService addressService;
 
-        Integer id = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName());
+  @Operation(summary = "delete user address")
+  @DeleteMapping
+  @PreAuthorize("hasAuthority('USER')")
+  String deleteUserAddress() {
 
-        addressService.deleteAddress(id);
+    Integer id = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName());
 
-        return "address is deleted";
-    }
-      @Operation(summary = "Add list of addresses for user")
-      @PreAuthorize("hasAuthority('USER')")
-      @PostMapping
-    public ResponseEntity<ApiResponse<String>>addListOfAddresses(@RequestBody List<Useraddress> addresses)
-    {
-        
-      try {
-         Integer id = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName());
+    addressService.deleteAddress(id);
 
-        addressService.addListOfAddresses(id, addresses);
+    return "address is deleted";
+  }
 
+  @Operation(summary = "Add list of addresses for user")
+  @PreAuthorize("hasAuthority('USER')")
+  @PostMapping
+  public ResponseEntity<ApiResponse<String>> addListOfAddresses(@RequestBody List<Useraddress> addresses) {
 
-      return ResponseEntity.ok(ApiResponse.success("addresses added Succefully",null));
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.ok(ApiResponse.error("cannot added addresses"));
-        }
+    try {
+      Integer id = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName());
 
+      addressService.addListOfAddresses(id, addresses);
 
-
+      return ResponseEntity.ok(ApiResponse.success("addresses added Succefully", null));
+    } catch (RuntimeException e) {
+      System.out.println(e.getMessage());
+      return ResponseEntity.ok(ApiResponse.error("cannot added addresses"));
     }
 
-    
+  }
+
+  @Operation(summary = "Delete user specific address")
+  @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('USER')")
+  ResponseEntity<ApiResponse<String>> deleteUserAddress(@PathVariable int id) {
+
+    try {
+      addressService.deleteAddress(id);
+      return ResponseEntity.ok(ApiResponse.success("addresses deleted Succefully", null));
+    } catch (RuntimeException e) {
+      System.out.println(e.getMessage());
+      return ResponseEntity.ok(ApiResponse.error("cannot delete addresses"));
+    }
+
+  }
 
 }
