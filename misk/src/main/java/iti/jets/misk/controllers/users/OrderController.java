@@ -57,7 +57,15 @@ public class OrderController {
         emailService.sendSimpleEmail(
                  userRepository.findById(userId).orElse(null).getEmail(),
                 "Order Confirmation",
-                "نفــحاتــك بدأت مـعنـا... شـكــرًا لأنــك اختــرت مــِســك. "
+                "Thank you for shopping with MISK – we're thrilled to have you as part of our fragrance-loving community!\n" +
+                        "\n" +
+                        "We're pleased to confirm that your order has been successfully placed and is now being prepared for shipment. You can expect your order to be delivered within 3 days.\n" +
+                        "\n" +
+                        "Please keep an eye on your email for updates — we’ll notify you with the exact shipping time and tracking details once your order is dispatched.\n" +
+                        "\n" +
+                        "If you have any questions or need support, feel free to reply to this email or reach out through our website.\n" +
+                        "\n" +
+                        "Thank you for choosing MISK. We can't wait for you to experience our scents!\n"
         );
         return new ResponseEntity<>(ApiResponse.success(message), HttpStatus.CREATED);
     }
