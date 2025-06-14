@@ -52,7 +52,7 @@ public class JWTProvider {
 
     }
 
-    public String JWTGeneration(String subject ,Map<String,Object> claims)
+    private String JWTGeneration(String subject ,Map<String,Object> claims)
     {
         var claimSet = JwtClaimsSet.builder()
         .issuer("self")

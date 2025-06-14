@@ -18,11 +18,12 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
+//public record UserInfoDto(String userName, String phoneNumber, String email, String birthDay, String job, String creditLimit, String intersets,String password) {
+//}
 
-
-@ToString
+@ToString(exclude = {"orders", "useraddresses", "shoppingcarts"})
 @Entity
-@Table(name = "user", catalog = "misk2", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

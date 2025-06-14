@@ -17,11 +17,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-@ToString
+@ToString(exclude = {"user", "orders"})
 @Entity
-@Table(name="useraddress"
-    ,catalog="misk2"
-)
+@Table(name="useraddress")
 public class Useraddress  implements java.io.Serializable {
 
     @Id 

@@ -1,26 +1,38 @@
 package iti.jets.misk.controllers.users;
 
-import iti.jets.misk.dtos.LoginRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import iti.jets.misk.dtos.ApiResponse;
+import iti.jets.misk.dtos.JWTResponse;
+import iti.jets.misk.dtos.LoginRequestDto;
+import iti.jets.misk.dtos.PasswordRequest;
 import iti.jets.misk.dtos.UserDTO;
 import iti.jets.misk.dtos.UserInfoDto;
+import iti.jets.misk.dtos.UserInfoDtoAndUserAddress;
+import iti.jets.misk.dtos.UserResponseDto;
 import iti.jets.misk.entities.User;
 import iti.jets.misk.exceptions.UserAlreadyExistException;
 import iti.jets.misk.exceptions.UserNotFoundException;
 import iti.jets.misk.services.JWTProvider;
 import iti.jets.misk.services.UserService;
+import iti.jets.misk.utils.AuthenticationUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
 import org.springframework.web.ErrorResponseException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
 
 import java.util.List;
 
+
+@Tag(name = "User")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -30,36 +42,107 @@ public class UserController {
     @Autowired 
     private JWTProvider JwtProvider;
 
+    @Operation(summary = "Get all users")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
-    public List<UserDTO> getUsers() {
-        return userService.findAll();
+    public ResponseEntity<ApiResponse<UserResponseDto>>getAllUsers()
+    {
+   
+        List<UserDTO> userDTOs =userService.findAll();
+
+        UserResponseDto userResponseDto = new UserResponseDto(userDTOs);
+
+        return ResponseEntity.ok(ApiResponse.success(userResponseDto));
+
+
+
+    }
+ 
+@Operation(summary = "Get user info")
+ @GetMapping("/profile")
+@PreAuthorize("hasAuthority('USER')")
+public ResponseEntity<ApiResponse<UserInfoDtoAndUserAddress>> getUser() {
+
+         int id = Integer.parseInt( SecurityContextHolder.getContext().getAuthentication().getName()) ;
+
+    
+    UserInfoDtoAndUserAddress user= userService.findById(id);
+
+    return ResponseEntity.ok(ApiResponse.success(user));
     }
 
-    @GetMapping("/{id}")
-    public User getUser(@PathVariable int id) {
-        return userService.findById(id);
+    
+
+    @Operation(summary = "Get user by Email")
+    @GetMapping("email/{email}")
+    public ResponseEntity<ApiResponse<User>> getUserByEmail(@PathVariable String email) {
+        User user= userService.findByEmail(email);
+
+         return ResponseEntity.ok(ApiResponse.success(user));
     }
 
+
+
+
+    @Operation(summary = "Update user")
+    @PatchMapping()
+    public ResponseEntity<ApiResponse<String>> updateUser( @RequestBody User newUser) {
+        try {
+            
+         int id = Integer.parseInt( SecurityContextHolder.getContext().getAuthentication().getName()) ;
+            userService.updateUser(id, newUser);
+            return ResponseEntity.ok(ApiResponse.success("user updated Succefully", null));
+        } catch (RuntimeException e) {
+            return ResponseEntity.ok(ApiResponse.error("cannot update user"));
+        }
+    }
+
+    @Operation(summary = "add new user by providing user info")
     @PostMapping("/register")
     public ResponseEntity<User>addNewUser(@RequestBody UserInfoDto dto)
     {
-        if(userService.checkEmailAvilibity(dto.email()))
+        if(userService.checkEmailAvilibity(dto.getEmail()))
         {
-            throw new ErrorResponseException(HttpStatus.BAD_REQUEST, new UserAlreadyExistException("you have an already account"));
+            throw new UserAlreadyExistException("you have an already account");
         }
 
         User user = userService.saveUser(dto);
+        
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
 
 
 
 
+
     }
-    // login
-    @PostMapping("/login")
-    public ResponseEntity<String> createJWTToken(@RequestBody LoginRequest loginRequest )
+
+    @Operation(summary = "chnage password")
+    @PostMapping("/chnagePassword")
+     @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<ApiResponse<User>> chnagePassword(@RequestBody PasswordRequest passwordRequest )
     {
+       try{  int id = Integer.parseInt( SecurityContextHolder.getContext().getAuthentication().getName()) ;
+
+        System.out.println(passwordRequest.getNewPassword());
+        System.out.println(passwordRequest.getOldPassword());
+
+      userService.updatePassword(id, passwordRequest);
+
+      return ResponseEntity.ok(ApiResponse.success("user updated Succefully",null));
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.ok(ApiResponse.error("cannot update user"));
+        }
+    }
+ 
+    
+    // login
+    @Operation(summary = "login user by providing email and password")
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<JWTResponse>> createJWTToken(@RequestBody LoginRequestDto loginRequest )
+    {
+         
         if(!userService.checkEmailAvilibity(loginRequest.email()))
         {
             throw new UserNotFoundException("this is user is not found");
@@ -72,7 +155,20 @@ public class UserController {
 
         String token = JwtProvider.JWTManager(loginRequest.email());
 
-        return ResponseEntity.ok().body(token);
+        String role = userService.getUserRole(loginRequest.email());
+
+        JWTResponse jwtResponse= new JWTResponse(token, "Bearer",role);
+
+
+
+
+
+        return ResponseEntity.ok().body(ApiResponse.success(jwtResponse));
+
 
     }
+
+    
+
+   
 }
