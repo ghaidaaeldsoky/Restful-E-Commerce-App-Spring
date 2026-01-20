@@ -105,4 +105,4 @@ This project was developed as the graduation project at the Information Technolo
 
 ---
 
-📩 **We welcome your questions, feedback, or collaboration opportunities!**
+📌 **We welcome your questions, feedback, or collaboration opportunities!**
