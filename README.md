@@ -94,3 +94,11 @@ The system supports role-based access control using JWT authentication:
 This project was developed as the graduation project at the Information Technology Institute (ITI) as part of the full-stack Java track. It was built collaboratively by a team of five members to simulate a real-world e-commerce platform environment.
 
 ---
+
+## 👥 Contributors
+
+- **[Ghaidaa Eldsoky](https://github.com/ghaidaaeldsoky)**
+- **[Aya Hathout](https://github.com/ayaHathout)**
+- **[Mai Nasser](https://github.com/mainasser22)**
+- **[Sama Mohamed](https://github.com/sama-kamel2462)**
+- **[Ahmad Taher](https://github.com/AhmadTaher1)**
