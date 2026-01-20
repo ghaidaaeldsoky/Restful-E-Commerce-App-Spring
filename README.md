@@ -88,3 +88,9 @@ The system supports role-based access control using JWT authentication:
 - Access secured admin-only endpoints
 
 ---
+
+## 🎓 Project Context
+
+This project was developed as the graduation project at the Information Technology Institute (ITI) as part of the full-stack Java track. It was built collaboratively by a team of five members to simulate a real-world e-commerce platform environment.
+
+---
