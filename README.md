@@ -65,7 +65,7 @@ mvn spring-boot:run
 4. **Access the application** at: [http://localhost:8085](http://localhost:8085)
 
 5. **Test the REST APIs**
-  -  use **Postman** or any REST client.
-  -  API documentation is available via Swagger: http://localhost:8085/swagger-ui/index.html
+   - use **Postman** or any REST client.
+   - API documentation is available via Swagger: http://localhost:8085/swagger-ui/index.html
 
 ---
