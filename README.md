@@ -16,3 +16,13 @@
 
 ---
 
+## 🧰 Tech Stack
+
+- **Language:** Java 21  
+- **Frameworks:** Spring Boot (including MVC, AOP, Security)  
+- **Database & ORM:** MySQL, JPA/Hibernate  
+- **Build & Dependency Management:** Maven  
+- **Libraries & Tools:** REST APIs, Lombok, MapStruct, JWT, Swagger/OpenAPI, Spring Mail
+- **Logging:** SLF4J + Logback
+
+---
