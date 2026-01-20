@@ -70,3 +70,21 @@ mvn spring-boot:run
    - API documentation is available via Swagger: http://localhost:8085/swagger-ui/index.html
 
 ---
+
+## 🧑‍💼 User Roles & Permissions
+
+The system supports role-based access control using JWT authentication:
+
+### 👤 User
+- Register and authenticate securely
+- Browse products and view product details
+- Add products to cart and manage quantities
+- Place orders using cash or Visa payment
+- Receive order confirmation via email
+- View and edit personal profile information
+
+### 🛠️ Admin
+- Manage products, users, and orders (create, update, soft delete, stock tracking)
+- Access secured admin-only endpoints
+
+---
