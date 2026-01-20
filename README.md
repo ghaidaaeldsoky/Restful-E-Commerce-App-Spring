@@ -61,7 +61,7 @@ spring.datasource.password=YOUR_PASSWORD
 mvn clean install
 mvn spring-boot:run
 ```
-> The application runs on port **8085** by default.
+   > The application runs on port **8085** by default.
 
 4. **Access the application** at: [http://localhost:8085](http://localhost:8085)
 
