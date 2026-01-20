@@ -26,3 +26,46 @@
 - **Logging:** SLF4J + Logback
 
 ---
+
+## ✅ Prerequisites
+
+Before running the project, make sure you have the following installed:
+
+- Java 21
+- MySQL
+- Maven
+
+---
+
+## ⚡ Getting Started
+
+Follow these steps to run the backend locally:
+
+1. **Clone the repository**:
+```bash
+git clone https://github.com/ghaidaaeldsoky/Restful-E-Commerce-App-Spring.git
+cd Restful-E-Commerce-App-Spring
+```
+
+2. **Create a MySQL database** (e.g., `misk_db`) and update the database configuration in `src/main/resources/application.properties`:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/misk_db
+spring.datasource.username=YOUR_USERNAME
+spring.datasource.password=YOUR_PASSWORD
+```
+
+3. **Build and run the application** using Maven:
+
+```bash
+mvn clean install
+mvn spring-boot:run
+```
+
+4. **Access the application** at: [http://localhost:8085](http://localhost:8085)
+
+5. **Test the REST APIs**
+  -  use **Postman** or any REST client.
+  -  API documentation is available via Swagger: http://localhost:8085/swagger-ui/index.html
+
+---
