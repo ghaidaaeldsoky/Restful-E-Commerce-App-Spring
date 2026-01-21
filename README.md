@@ -31,6 +31,16 @@
 
 ---
 
+## 🗄️ Database Schema
+
+The following diagram illustrates the core database structure and relationships used in the MISK backend:
+
+<p align="center">
+  <img src="db-schema.png" alt="Database Schema"/>
+</p>
+
+---
+
 ## ✅ Prerequisites
 
 Before running the project, make sure you have the following installed:
