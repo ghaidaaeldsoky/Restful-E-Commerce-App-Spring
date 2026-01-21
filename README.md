@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" alt="MISK Logo" width="180"/>
+  <img src="logo.png" alt="MISK Logo"/>
 </p>
 
 # 🧴 MISK – E-Commerce Backend for Perfume Store
